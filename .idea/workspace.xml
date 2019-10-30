@@ -1,17 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="97285ef4-5d9f-4caa-90fa-95748bcebd0d" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/lib1.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Model/ImageChanger.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/lib.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/lib.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+    <list default="true" id="97285ef4-5d9f-4caa-90fa-95748bcebd0d" name="Default Changelist" comment="Fixed brightness and tone, added all basic functionality except for saving images">
+      <change afterPath="$PROJECT_DIR$/src/Model/Filter.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ImageProcessor_CS_HL.iml" beforeDir="false" afterPath="$PROJECT_DIR$/ImageProcessor_CS_HL.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/View/Controller.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/View/Controller.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Model/ImageChanger.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Model/ImageChanger.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/View/View.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/View/View.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/View/sample.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/View/sample.fxml" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -23,6 +17,7 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="Class" />
+        <option value="Enum" />
       </list>
     </option>
   </component>
@@ -77,6 +72,14 @@
       <option name="presentableId" value="Default" />
       <updated>1571813736868</updated>
     </task>
+    <task id="LOCAL-00001" summary="Added ImageChanger class and some basic functionality">
+      <created>1572336738699</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1572336738699</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -96,6 +99,9 @@
     <ignored-roots>
       <path value="$PROJECT_DIR$/ImageProcessor_CS_HL" />
     </ignored-roots>
+    <MESSAGE value="Added ImageChanger class and some basic functionality" />
+    <MESSAGE value="Fixed brightness and tone, added all basic functionality except for saving images" />
+    <option name="LAST_COMMIT_MESSAGE" value="Fixed brightness and tone, added all basic functionality except for saving images" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
