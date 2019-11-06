@@ -1,13 +1,11 @@
 package Controller;
 
-import javafx.fxml.FXML;
+import java.io.File;
 
-public class Controller {
-    public static void start() {
-
-    }
+public class Buttons {
     public static void openImage()
     {
         System.out.println(View.Dialogs.openImage().toURI().toString());
+        //return new Image(file.toURI().toString());
     }
 }
