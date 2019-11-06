@@ -15,10 +15,9 @@
         <Menu mnemonicParsing="false" text="File">
           <items>
             <MenuItem fx:id = "open" mnemonicParsing="false" text="Open…" onAction="#handleOpenAction"/>
-            <MenuItem fx:id = "close" mnemonicParsing="false" text="Close" />
-            <MenuItem fx:id = "save" mnemonicParsing="false" text="Save" />
-            <MenuItem fx:id = "save_ass" mnemonicParsing="false" text="Save As…" />
-            <MenuItem fx:id = "quit" mnemonicParsing="false" text="Quit" />
+            <MenuItem fx:id = "save" mnemonicParsing="false" text="Save" onAction="#handleSaveAction"/>
+            <MenuItem fx:id = "saveAs" mnemonicParsing="false" text="Save As…" onAction="#handleSaveAsAction"/>
+            <MenuItem fx:id = "quit" mnemonicParsing="false" text="Quit" onAction="#handleQuitAction"/>
           </items>
         </Menu>
         <Menu mnemonicParsing="false" text="Edit" />
