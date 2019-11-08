@@ -1,12 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="97285ef4-5d9f-4caa-90fa-95748bcebd0d" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Model/Filter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Model/Filter.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Model/ImageChanger.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Model/ImageChanger.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/View/View.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/View/View.java" afterDir="false" />
-    </list>
+    <list default="true" id="97285ef4-5d9f-4caa-90fa-95748bcebd0d" name="Default Changelist" comment="" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -86,7 +81,14 @@
       <option name="project" value="LOCAL" />
       <updated>1572456364930</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="Changed ImageChanger to non-ImageView extender, fixed tone">
+      <created>1573192916644</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1573192916644</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -109,7 +111,8 @@
     <MESSAGE value="Added ImageChanger class and some basic functionality" />
     <MESSAGE value="Fixed brightness and tone, added all basic functionality except for saving images" />
     <MESSAGE value="Fixed brightness and tone, added all basic functionality" />
-    <option name="LAST_COMMIT_MESSAGE" value="Fixed brightness and tone, added all basic functionality" />
+    <MESSAGE value="Changed ImageChanger to non-ImageView extender, fixed tone" />
+    <option name="LAST_COMMIT_MESSAGE" value="Changed ImageChanger to non-ImageView extender, fixed tone" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
