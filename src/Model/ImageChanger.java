@@ -9,9 +9,10 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
-public class ImageChanger extends ImageView {
+public class ImageChanger {
 
     private Image defaultImage;
+    private Image currentImage;
     private Filter filter;
 
     public ImageChanger(String url) {
@@ -22,12 +23,15 @@ public class ImageChanger extends ImageView {
 
     //return image to initial state
     public void toDefault() {
-        this.setImage(this.defaultImage);
+        this.filter.setGrayscale(false);
+        this.filter.setBrightness(1);
+        this.filter.setTone(0.5);
+        this.currentImage = defaultImage;
     }
 
     //apply changes to image
     private void applyFilter() {
-        this.toDefault();
+        this.currentImage = defaultImage;
         this.applyBrightness(this.filter.getBrightness());
         this.applyTone(this.filter.getTone());
         if(this.filter.isGrayscale()) this.applyGrayScale();
@@ -59,7 +63,7 @@ public class ImageChanger extends ImageView {
 
     //set image to grayscale
     private void applyGrayScale() {
-        Image sourceImage = this.getImage();
+        Image sourceImage = this.currentImage;
 
         PixelReader pixelReader = sourceImage.getPixelReader();
 
@@ -84,12 +88,12 @@ public class ImageChanger extends ImageView {
                 pixelWriter.setArgb(x, y, -grayPixel);
             }
         }
-        this.setImage(grayImage);
+        this.currentImage = grayImage;
     }
 
     //change brightness of image according to filter
     public void applyBrightness(double brightness) {
-        Image sourceImage = this.getImage();
+        Image sourceImage = this.currentImage;
 
         PixelReader pixelReader = sourceImage.getPixelReader();
 
@@ -111,42 +115,46 @@ public class ImageChanger extends ImageView {
                 int brightGreen = 255 - (int) Math.min((double)green * brightness, 255D);
                 int brightBlue = 255 - (int) Math.min((double)blue * brightness, 255D);
                 int brightPixel = (brightRed << 16) + (brightGreen << 8) + brightBlue;
-
-                pixelWriter.setArgb(x, y, -brightPixel);
+                if(brightPixel == 0 && pixel != 0 && brightness >= 1)
+                    pixelWriter.setColor(x, y, Color.WHITE);
+                else pixelWriter.setArgb(x, y, -brightPixel);
             }
         }
-        this.setImage(brightImage);
+        this.currentImage = brightImage;
     }
 
     //change tone of image according to filter
     private void applyTone(double tone) {
         Image sourceImage = this.getImage();
 
+        tone = 510 * tone - 255;
+
         PixelReader pixelReader = sourceImage.getPixelReader();
 
         int width = (int)sourceImage.getWidth();
         int height = (int)sourceImage.getHeight();
 
-        WritableImage TonedImage = new WritableImage(width, height);
+        WritableImage tonedImage = new WritableImage(width, height);
 
-        PixelWriter pixelWriter = TonedImage.getPixelWriter();
+        PixelWriter pixelWriter = tonedImage.getPixelWriter();
         for (int x = 0; x < width; x++) {
             for (int y = 0; y < height; y++) {
+
                 int pixel = pixelReader.getArgb(x, y);
 
                 int red = ((pixel >> 16) & 0xff);
                 int green = ((pixel >> 8) & 0xff);
                 int blue = (pixel & 0xff);
 
-                int TonedRed = 255 - Math.max((int)Math.min((double)red * tone, 255D), 0);
+                int TonedRed = 255 - Math.max((int)Math.min((double)red + tone, 255D), 0);
                 int TonedGreen = 255 - green;
-                int TonedBlue = 255 - Math.min((int)Math.max((double)blue / tone, 0D), 255);
+                int TonedBlue = 255 - Math.min((int)Math.max((double)blue - tone, 0D), 255);
                 int toned = 255 - (TonedRed << 16) - (TonedGreen << 8) - TonedBlue;
 
                 pixelWriter.setArgb(x, y, toned);
             }
         }
-        this.setImage(TonedImage);
+        this.currentImage = tonedImage;
     }
 
     //get distribution of red across specified number of divisions
@@ -195,7 +203,12 @@ public class ImageChanger extends ImageView {
     //set image from url
     public void setImage(String url) {
         this.defaultImage = new Image(url);
-        this.setImage(defaultImage);
+        this.currentImage = this.defaultImage;
+    }
+
+    //get current image
+    public Image getImage() {
+        return currentImage;
     }
 
     //save image to file
@@ -210,7 +223,4 @@ public class ImageChanger extends ImageView {
             }
         }
     }
-
-
-
 }

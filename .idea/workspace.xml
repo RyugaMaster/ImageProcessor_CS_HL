@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="97285ef4-5d9f-4caa-90fa-95748bcebd0d" name="Default Changelist" comment="Fixed brightness and tone, added all basic functionality except for saving images">
-      <change afterPath="$PROJECT_DIR$/src/Model/Filter.java" afterDir="false" />
+    <list default="true" id="97285ef4-5d9f-4caa-90fa-95748bcebd0d" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Model/Filter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Model/Filter.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Model/ImageChanger.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Model/ImageChanger.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/View/View.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/View/View.java" afterDir="false" />
     </list>
@@ -79,7 +79,14 @@
       <option name="project" value="LOCAL" />
       <updated>1572336738699</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="Fixed brightness and tone, added all basic functionality">
+      <created>1572456364930</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1572456364930</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -101,7 +108,8 @@
     </ignored-roots>
     <MESSAGE value="Added ImageChanger class and some basic functionality" />
     <MESSAGE value="Fixed brightness and tone, added all basic functionality except for saving images" />
-    <option name="LAST_COMMIT_MESSAGE" value="Fixed brightness and tone, added all basic functionality except for saving images" />
+    <MESSAGE value="Fixed brightness and tone, added all basic functionality" />
+    <option name="LAST_COMMIT_MESSAGE" value="Fixed brightness and tone, added all basic functionality" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -110,6 +118,11 @@
           <url>file://$PROJECT_DIR$/src/View/Controller.java</url>
           <line>3</line>
           <option name="timeStamp" value="3" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/Model/ImageChanger.java</url>
+          <line>118</line>
+          <option name="timeStamp" value="5" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

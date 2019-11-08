@@ -16,10 +16,12 @@ public class View extends Application {
     public void start(Stage primaryStage) throws Exception{
         primaryStage.setTitle("ImageProcessor");
         ImageChanger imageChanger = new ImageChanger("file:C:\\Users\\obole\\Downloads\\scenery.jpeg");
-        //imageChanger.setBrightness(0.5);
-        //imageChanger.setTone(120);
-        //imageChanger.setTone(1.5);
-        imageChanger.toGrayScale();
+        imageChanger.setBrightness(1);
+        //imageChanger.toGrayScale();
+        //imageChanger.undoGrayScale();
+        //imageChanger.setTone(0.55);
+        //imageChanger.setTone(0.5);
+        //imageChanger.toGrayScale();
         imageChanger.saveImage("C:\\Users\\obole\\Downloads\\sceneryGrayscale.png");
         /*int[] hist = imageChanger.getHistogramRed(5);
         for(int i : hist)
@@ -30,10 +32,11 @@ public class View extends Application {
         for(int i : hist)
             System.out.print(i + " ");
         System.out.println("");*/
-        imageChanger.setLayoutX(600);
-        ImageView imageView = new ImageView("file:C:\\Users\\obole\\Downloads\\scenery.jpeg");
-        Group root = new Group(imageView, imageChanger);
-        primaryStage.setScene(new Scene(root, 1000, 500));
+        ImageView imageViewCurrent = new ImageView(imageChanger.getImage());
+        imageViewCurrent.setLayoutX(600);
+        ImageView imageViewDefault = new ImageView("file:C:\\Users\\obole\\Downloads\\scenery.jpeg");
+        Group root = new Group(imageViewDefault, imageViewCurrent);
+        primaryStage.setScene(new Scene(root, 1200, 500));
         primaryStage.show();
     }
 

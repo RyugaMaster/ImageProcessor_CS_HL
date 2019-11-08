@@ -7,7 +7,7 @@ public class Filter {
 
     public Filter() {
         this.brightness = 1D;
-        this.tone = 1D;
+        this.tone = 0.5D;
         this.isGrayscale = false;
     }
 
