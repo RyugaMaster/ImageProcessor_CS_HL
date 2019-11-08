@@ -206,6 +206,10 @@ public class ImageChanger {
         this.currentImage = this.defaultImage;
     }
 
+    public void setImage(File f){
+        setImage(f.toURI().toString());
+    }
+
     //get current image
     public Image getImage() {
         return currentImage;
