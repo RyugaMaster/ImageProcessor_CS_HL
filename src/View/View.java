@@ -1,48 +1,33 @@
 package View;
 
-import Model.ImageChanger;
 import javafx.application.Application;
-import javafx.scene.Group;
+import javafx.event.EventHandler;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import javafx.scene.control.MenuItem;
 
-import java.io.File;
+import java.awt.*;
 
 public class View extends Application {
 
+    static Stage stage;
+
     @Override
     public void start(Stage primaryStage) throws Exception{
-        primaryStage.setTitle("ImageProcessor");
-        ImageChanger imageChanger = new ImageChanger("file:C:\\Users\\obole\\Downloads\\scenery.jpeg");
-        imageChanger.setBrightness(1);
-        //imageChanger.toGrayScale();
-        //imageChanger.undoGrayScale();
-        //imageChanger.setTone(0.55);
-        //imageChanger.setTone(0.5);
-        //imageChanger.toGrayScale();
-        imageChanger.saveImage("C:\\Users\\obole\\Downloads\\sceneryGrayscale.png");
-        /*int[] hist = imageChanger.getHistogramRed(5);
-        for(int i : hist)
-            System.out.print(i + " ");
-        System.out.println("");
-        imageChanger.setTone(100);
-        hist = imageChanger.getHistogramRed(5);
-        for(int i : hist)
-            System.out.print(i + " ");
-        System.out.println("");*/
-        ImageView imageViewCurrent = new ImageView(imageChanger.getImage());
-        imageViewCurrent.setLayoutX(600);
-        ImageView imageViewDefault = new ImageView("file:C:\\Users\\obole\\Downloads\\scenery.jpeg");
-        Group root = new Group(imageViewDefault, imageViewCurrent);
-        primaryStage.setScene(new Scene(root, 1200, 500));
+        VBox root = FXMLLoader.load(getClass().getResource("layout.fxml"));
+        stage = primaryStage;
+        primaryStage.setTitle("Hello World");
+        primaryStage.setScene(new Scene(root, 1600, 900));
         primaryStage.show();
     }
 
-    public static void show(String[] args) {launch(args);}
+    public static void start(String[] args) {launch(args);}
 
-    public static void main(String[] args) {
+    /*public static void main(String[] args) {
         launch(args);
-    }
+    }*/
 }
