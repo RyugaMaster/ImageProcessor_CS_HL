@@ -1,19 +1,42 @@
 package View;
 
+import Model.ImageChanger;
 import javafx.application.Application;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
+import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
+
+import java.io.File;
 
 public class View extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception{
-        Parent root = FXMLLoader.load(getClass().getResource("sample.fxml"));
-        primaryStage.setTitle("Hello World");
-        primaryStage.setScene(new Scene(root, 300, 275));
+        primaryStage.setTitle("ImageProcessor");
+        ImageChanger imageChanger = new ImageChanger("file:C:\\Users\\obole\\Downloads\\scenery.jpeg");
+        imageChanger.setBrightness(1);
+        //imageChanger.toGrayScale();
+        //imageChanger.undoGrayScale();
+        //imageChanger.setTone(0.55);
+        //imageChanger.setTone(0.5);
+        //imageChanger.toGrayScale();
+        imageChanger.saveImage("C:\\Users\\obole\\Downloads\\sceneryGrayscale.png");
+        /*int[] hist = imageChanger.getHistogramRed(5);
+        for(int i : hist)
+            System.out.print(i + " ");
+        System.out.println("");
+        imageChanger.setTone(100);
+        hist = imageChanger.getHistogramRed(5);
+        for(int i : hist)
+            System.out.print(i + " ");
+        System.out.println("");*/
+        ImageView imageViewCurrent = new ImageView(imageChanger.getImage());
+        imageViewCurrent.setLayoutX(600);
+        ImageView imageViewDefault = new ImageView("file:C:\\Users\\obole\\Downloads\\scenery.jpeg");
+        Group root = new Group(imageViewDefault, imageViewCurrent);
+        primaryStage.setScene(new Scene(root, 1200, 500));
         primaryStage.show();
     }
 
