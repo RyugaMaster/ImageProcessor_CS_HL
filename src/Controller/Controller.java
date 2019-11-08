@@ -1,7 +1,5 @@
 package Controller;
 
-import javafx.fxml.FXML;
-
 public class Controller {
     public static void start() {
 
@@ -19,7 +17,7 @@ public class Controller {
 
     public static void saveAs()
     {
-
+        System.out.println(View.Dialogs.saveImage().toURI().toString());
     }
 
     public static void quit()
