@@ -44,8 +44,8 @@ public class ImageChanger {
         double tone = this.filter.getTone();
         double brightness = this.filter.getBrightness();
         if(isGrayscale) this.applyGrayScale();
-        if(brightness != 1D) this.applyBrightness(brightness);
         if(tone != 0.5) this.applyTone(tone);
+        if(brightness != 1D) this.applyBrightness(brightness);
     }
 
     //change filter to grayscale
@@ -128,7 +128,7 @@ public class ImageChanger {
                 int brightBlue = 255 - (int) Math.min((double)blue * brightness, 255D);
                 int brightPixel = (brightRed << 16) + (brightGreen << 8) + brightBlue;
                 if(brightPixel == 0 && pixel != 0 && brightness >= 1)
-                    pixelWriter.setArgb(x, y, (255 << 16) + (255 << 8) + 255);
+                    pixelWriter.setColor(x, y, Color.WHITE);
                 else pixelWriter.setArgb(x, y, -brightPixel);
             }
         }
@@ -227,15 +227,13 @@ public class ImageChanger {
     }
 
     //save image to file
-    public void saveImage(String path) throws RuntimeException, IOException {
+    public void saveImage(String path) throws RuntimeException{
         File outputFile = new File(path);
-        if(outputFile.createNewFile()) {
-            BufferedImage bImage = SwingFXUtils.fromFXImage(this.getImage(), null);
-            try {
-                ImageIO.write(bImage, "png", outputFile);
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
+        BufferedImage bImage = SwingFXUtils.fromFXImage(this.getImage(), null);
+        try {
+            ImageIO.write(bImage, "png", outputFile);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
     }
 }

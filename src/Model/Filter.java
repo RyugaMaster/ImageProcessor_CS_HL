@@ -1,11 +1,11 @@
 package Model;
 
-public class Filter {
+class Filter {
     private double brightness;
     private double tone;
     private boolean isGrayscale;
 
-    public Filter() {
+    Filter() {
         this.brightness = 1D;
         this.tone = 0.5D;
         this.isGrayscale = false;

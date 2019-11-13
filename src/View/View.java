@@ -19,9 +19,9 @@ public class View extends Application {
         imageChanger.setBrightness(2);
         //imageChanger.toGrayScale();
         //imageChanger.undoGrayScale();
-        imageChanger.setTone(0.3);
+        imageChanger.setTone(0.5);
         //imageChanger.toGrayScale();
-        imageChanger.saveImage("C:\\Users\\obole\\Downloads\\sceneryGrayscale.png");
+        imageChanger.saveImage("C:\\Users\\obole\\Downloads\\scenery.jpeg");
         /*int[] hist = imageChanger.getHistogramRed(5);
         for(int i : hist)
             System.out.print(i + " ");
