@@ -16,11 +16,10 @@ public class View extends Application {
     public void start(Stage primaryStage) throws Exception{
         primaryStage.setTitle("ImageProcessor");
         ImageChanger imageChanger = new ImageChanger("file:C:\\Users\\obole\\Downloads\\scenery.jpeg");
-        imageChanger.setBrightness(1);
+        imageChanger.setBrightness(2);
         //imageChanger.toGrayScale();
         //imageChanger.undoGrayScale();
-        //imageChanger.setTone(0.55);
-        //imageChanger.setTone(0.5);
+        imageChanger.setTone(0.3);
         //imageChanger.toGrayScale();
         imageChanger.saveImage("C:\\Users\\obole\\Downloads\\sceneryGrayscale.png");
         /*int[] hist = imageChanger.getHistogramRed(5);
