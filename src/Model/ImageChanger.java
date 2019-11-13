@@ -1,13 +1,17 @@
 package Model;
 
 import javafx.embed.swing.SwingFXUtils;
-import javafx.scene.image.*;
+import javafx.scene.image.Image;
+import javafx.scene.image.PixelReader;
+import javafx.scene.image.PixelWriter;
+import javafx.scene.image.WritableImage;
 import javafx.scene.paint.Color;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 
 public class ImageChanger {
 
@@ -15,9 +19,9 @@ public class ImageChanger {
     private Image currentImage;
     private Filter filter;
 
-    public ImageChanger(String url) {
+    public ImageChanger() {
         super();
-        this.setImage(url);
+        this.setImage();
         filter = new Filter();
     }
 
@@ -198,6 +202,12 @@ public class ImageChanger {
             }
         }
         return histogram;
+    }
+
+    public void setImage() {
+        InputStream inputStream = this.getClass().getResourceAsStream("white.jpg");
+        this.defaultImage = new Image(inputStream);
+        this.currentImage = this.defaultImage;
     }
 
     //set image from url

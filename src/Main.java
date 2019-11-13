@@ -1,12 +1,16 @@
-import View.View;
-import Model.Model;
 import Controller.Controller;
+import Model.ImageChanger;
+import Model.Model;
+import View.View;
 
 public class Main {
-    public static void main(String args[])
+    private static ImageChanger imageChanger;
+
+    public static void main(String[] args)
     {
-        View.start(args);
+        imageChanger = new ImageChanger();
         Model.start();
-        Controller.start();
+        Controller.start(imageChanger);
+        View.start(args, imageChanger);
     }
 }
