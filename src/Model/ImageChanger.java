@@ -1,17 +1,13 @@
 package Model;
 
 import javafx.embed.swing.SwingFXUtils;
-import javafx.scene.image.Image;
-import javafx.scene.image.PixelReader;
-import javafx.scene.image.PixelWriter;
-import javafx.scene.image.WritableImage;
+import javafx.scene.image.*;
 import javafx.scene.paint.Color;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 
 public class ImageChanger {
 
@@ -19,10 +15,18 @@ public class ImageChanger {
     private Image currentImage;
     private Filter filter;
 
+    public ImageChanger(String url) {
+        this.setImage(url);
+        this.filter = new Filter();
+    }
+
     public ImageChanger() {
-        super();
-        this.setImage();
-        filter = new Filter();
+        this.filter = new Filter();
+    }
+
+    public ImageChanger(Image image) {
+        this.setImage(image);
+        this.filter = new Filter();
     }
 
     //return image to initial state
@@ -36,9 +40,12 @@ public class ImageChanger {
     //apply changes to image
     private void applyFilter() {
         this.currentImage = defaultImage;
-        this.applyBrightness(this.filter.getBrightness());
-        this.applyTone(this.filter.getTone());
-        if(this.filter.isGrayscale()) this.applyGrayScale();
+        boolean isGrayscale = this.filter.isGrayscale();
+        double tone = this.filter.getTone();
+        double brightness = this.filter.getBrightness();
+        if(isGrayscale) this.applyGrayScale();
+        if(brightness != 1D) this.applyBrightness(brightness);
+        if(tone != 0.5) this.applyTone(tone);
     }
 
     //change filter to grayscale
@@ -61,6 +68,7 @@ public class ImageChanger {
 
     //change filter tone
     public void setTone(double tone) {
+        tone = 510 * tone - 255;
         this.filter.setTone(tone);
         this.applyFilter();
     }
@@ -96,7 +104,7 @@ public class ImageChanger {
     }
 
     //change brightness of image according to filter
-    public void applyBrightness(double brightness) {
+    private void applyBrightness(double brightness) {
         Image sourceImage = this.currentImage;
 
         PixelReader pixelReader = sourceImage.getPixelReader();
@@ -120,7 +128,7 @@ public class ImageChanger {
                 int brightBlue = 255 - (int) Math.min((double)blue * brightness, 255D);
                 int brightPixel = (brightRed << 16) + (brightGreen << 8) + brightBlue;
                 if(brightPixel == 0 && pixel != 0 && brightness >= 1)
-                    pixelWriter.setColor(x, y, Color.WHITE);
+                    pixelWriter.setArgb(x, y, (255 << 16) + (255 << 8) + 255);
                 else pixelWriter.setArgb(x, y, -brightPixel);
             }
         }
@@ -130,8 +138,6 @@ public class ImageChanger {
     //change tone of image according to filter
     private void applyTone(double tone) {
         Image sourceImage = this.getImage();
-
-        tone = 510 * tone - 255;
 
         PixelReader pixelReader = sourceImage.getPixelReader();
 
@@ -150,9 +156,9 @@ public class ImageChanger {
                 int green = ((pixel >> 8) & 0xff);
                 int blue = (pixel & 0xff);
 
-                int TonedRed = 255 - Math.max((int)Math.min((double)red + tone, 255D), 0);
+                int TonedRed = 255 - Math.max((int) Math.min((double) red + tone, 255D), 0);
                 int TonedGreen = 255 - green;
-                int TonedBlue = 255 - Math.min((int)Math.max((double)blue - tone, 0D), 255);
+                int TonedBlue = 255 - Math.min((int) Math.max((double) blue - tone, 0D), 255);
                 int toned = 255 - (TonedRed << 16) - (TonedGreen << 8) - TonedBlue;
 
                 pixelWriter.setArgb(x, y, toned);
@@ -204,20 +210,15 @@ public class ImageChanger {
         return histogram;
     }
 
-    public void setImage() {
-        InputStream inputStream = this.getClass().getResourceAsStream("white.jpg");
-        this.defaultImage = new Image(inputStream);
-        this.currentImage = this.defaultImage;
-    }
-
     //set image from url
     public void setImage(String url) {
         this.defaultImage = new Image(url);
-        this.currentImage = Jarvis.process(this.defaultImage);
+        this.currentImage = this.defaultImage;
     }
 
-    public void setImage(File f){
-        setImage(f.toURI().toString());
+    public void setImage(Image image) {
+        this.defaultImage = image;
+        this.currentImage = image;
     }
 
     //get current image
@@ -229,18 +230,6 @@ public class ImageChanger {
     public void saveImage(String path) throws RuntimeException, IOException {
         File outputFile = new File(path);
         if(outputFile.createNewFile()) {
-            BufferedImage bImage = SwingFXUtils.fromFXImage(this.getImage(), null);
-            try {
-                ImageIO.write(bImage, "png", outputFile);
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-        }
-    }
-
-    public void saveImage(File f) throws RuntimeException, IOException {
-        File outputFile = f;
-        if (outputFile.createNewFile()) {
             BufferedImage bImage = SwingFXUtils.fromFXImage(this.getImage(), null);
             try {
                 ImageIO.write(bImage, "png", outputFile);

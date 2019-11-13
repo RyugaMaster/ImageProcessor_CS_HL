@@ -2,46 +2,46 @@ package View;
 
 import Model.ImageChanger;
 import javafx.application.Application;
-import javafx.fxml.FXMLLoader;
+import javafx.scene.Group;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+
+import java.io.File;
 
 public class View extends Application {
 
-    static Stage stage;
-    static private ImageView img;
-    static private ImageChanger imageChanger;
-
-    public static void start(String[] args, ImageChanger _imageChanger) {
-        imageChanger = _imageChanger;
-        launch(args);
-    }
-
-    public static void read() {
-        img.setImage(imageChanger.getImage());
-    }
-
     @Override
     public void start(Stage primaryStage) throws Exception{
-        FXMLLoader fxmlLoader = new FXMLLoader();
-        VBox root = fxmlLoader.load(getClass().getResource("layout.fxml").openStream());
-        ViewController viewController = fxmlLoader.getController();
-        stage = primaryStage;
-        primaryStage.setTitle("Hello World");
-        primaryStage.setScene(new Scene(root, 1600, 900));
+        primaryStage.setTitle("ImageProcessor");
+        ImageChanger imageChanger = new ImageChanger("file:C:\\Users\\obole\\Downloads\\scenery.jpeg");
+        imageChanger.setBrightness(2);
+        //imageChanger.toGrayScale();
+        //imageChanger.undoGrayScale();
+        imageChanger.setTone(0.3);
+        //imageChanger.toGrayScale();
+        imageChanger.saveImage("C:\\Users\\obole\\Downloads\\sceneryGrayscale.png");
+        /*int[] hist = imageChanger.getHistogramRed(5);
+        for(int i : hist)
+            System.out.print(i + " ");
+        System.out.println("");
+        imageChanger.setTone(100);
+        hist = imageChanger.getHistogramRed(5);
+        for(int i : hist)
+            System.out.print(i + " ");
+        System.out.println("");*/
+        ImageView imageViewCurrent = new ImageView(imageChanger.getImage());
+        imageViewCurrent.setLayoutX(600);
+        ImageView imageViewDefault = new ImageView("file:C:\\Users\\obole\\Downloads\\scenery.jpeg");
+        Group root = new Group(imageViewDefault, imageViewCurrent);
+        primaryStage.setScene(new Scene(root, 1200, 500));
         primaryStage.show();
-        AnchorPane field = viewController.pane;
-        img = new ImageView(imageChanger.getImage());
-        System.out.println(field);
-        field.getChildren().add(img);
-        img.setFitWidth(1366);
-        img.setFitHeight(768);
     }
 
-    /*public static void main(String[] args) {
+    public static void show(String[] args) {launch(args);}
+
+    public static void main(String[] args) {
         launch(args);
-    }*/
+    }
 }
