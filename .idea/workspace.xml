@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="97285ef4-5d9f-4caa-90fa-95748bcebd0d" name="Default Changelist" comment="">
+    <list default="true" id="97285ef4-5d9f-4caa-90fa-95748bcebd0d" name="Default Changelist" comment="Added new constructor to ImageChanger">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ImageProcessor_CS_HL.iml" beforeDir="false" afterPath="$PROJECT_DIR$/ImageProcessor_CS_HL.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Model/Filter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Model/Filter.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Model/ImageChanger.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Model/ImageChanger.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/View/View.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/View/View.java" afterDir="false" />
     </list>
@@ -100,7 +100,14 @@
       <option name="project" value="LOCAL" />
       <updated>1573192931187</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="Added new constructor to ImageChanger">
+      <created>1573624944274</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1573624944274</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -124,7 +131,8 @@
     <MESSAGE value="Fixed brightness and tone, added all basic functionality except for saving images" />
     <MESSAGE value="Fixed brightness and tone, added all basic functionality" />
     <MESSAGE value="Changed ImageChanger to non-ImageView extender, fixed tone" />
-    <option name="LAST_COMMIT_MESSAGE" value="Changed ImageChanger to non-ImageView extender, fixed tone" />
+    <MESSAGE value="Added new constructor to ImageChanger" />
+    <option name="LAST_COMMIT_MESSAGE" value="Added new constructor to ImageChanger" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
