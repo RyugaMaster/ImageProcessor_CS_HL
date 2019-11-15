@@ -6,13 +6,13 @@ import javafx.scene.image.PixelWriter;
 import javafx.scene.image.WritableImage;
 import javafx.scene.paint.Color;
 
-public class Jarvis {
+class Jarvis {
     private final static double[] MULT = {0, 7.0 / 48, 5.0 / 48, 3.0 / 48, 1.0 / 48};
     private final static double W_RED = 0.299 * 255;
     private final static double W_GREEN = 0.587 * 255;
     private final static double W_BLUE = 0.114 * 255;
 
-    public static Image process(Image img) {
+    static Image process(Image img) {
         int h = (int) img.getHeight(), w = (int) img.getWidth();
         WritableImage res = new WritableImage(w, h);
         PixelWriter writer = res.getPixelWriter();
