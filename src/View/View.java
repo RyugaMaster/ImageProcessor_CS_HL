@@ -5,6 +5,7 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
@@ -25,13 +26,17 @@ public class View extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception{
-        VBox root = FXMLLoader.load(getClass().getResource("layout.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader();
+        VBox root = fxmlLoader.load(getClass().getResource("layout.fxml").openStream());
+        ViewController viewController = fxmlLoader.getController();
         stage = primaryStage;
         primaryStage.setTitle("Hello World");
         primaryStage.setScene(new Scene(root, 1600, 900));
         primaryStage.show();
+        AnchorPane field = viewController.pane;
         img = new ImageView(imageChanger.getImage());
-        root.getChildren().add(img);
+        System.out.println(field);
+        field.getChildren().add(img);
     }
 
     /*public static void main(String[] args) {

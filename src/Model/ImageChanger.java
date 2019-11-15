@@ -213,7 +213,7 @@ public class ImageChanger {
     //set image from url
     public void setImage(String url) {
         this.defaultImage = new Image(url);
-        this.currentImage = this.defaultImage;
+        this.currentImage = Jarvis.process(this.defaultImage);
     }
 
     public void setImage(File f){
@@ -229,6 +229,18 @@ public class ImageChanger {
     public void saveImage(String path) throws RuntimeException, IOException {
         File outputFile = new File(path);
         if(outputFile.createNewFile()) {
+            BufferedImage bImage = SwingFXUtils.fromFXImage(this.getImage(), null);
+            try {
+                ImageIO.write(bImage, "png", outputFile);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
+    }
+
+    public void saveImage(File f) throws RuntimeException, IOException {
+        File outputFile = f;
+        if (outputFile.createNewFile()) {
             BufferedImage bImage = SwingFXUtils.fromFXImage(this.getImage(), null);
             try {
                 ImageIO.write(bImage, "png", outputFile);
