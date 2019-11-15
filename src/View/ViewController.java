@@ -4,6 +4,9 @@ import Controller.Controller;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.MenuItem;
+import javafx.scene.layout.AnchorPane;
+
+import java.io.IOException;
 
 public class ViewController {
     @FXML
@@ -19,19 +22,22 @@ public class ViewController {
     private MenuItem quit;
 
     @FXML
+    AnchorPane pane;
+
+    @FXML
     private void handleOpenAction(ActionEvent event)
     {
         Controller.open();
     }
 
     @FXML
-    private void handleSaveAction(ActionEvent event)
+    private void handleSaveAction(ActionEvent event) throws RuntimeException, IOException
     {
         Controller.save();
     }
 
     @FXML
-    private void handleSaveAsAction(ActionEvent event)
+    private void handleSaveAsAction(ActionEvent event) throws RuntimeException, IOException
     {
         Controller.saveAs();
     }
