@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="97285ef4-5d9f-4caa-90fa-95748bcebd0d" name="Default Changelist" comment="">
+    <list default="true" id="97285ef4-5d9f-4caa-90fa-95748bcebd0d" name="Default Changelist" comment="improved histograms and efficiency">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Model/Filter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Model/Filter.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Model/ImageChanger.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Model/ImageChanger.java" afterDir="false" />
@@ -114,7 +114,14 @@
       <option name="project" value="LOCAL" />
       <updated>1573627771839</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="added black-and-white conversion, fixed brightness and tone fo sure">
+      <created>1573940113520</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1573940113520</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -140,7 +147,9 @@
     <MESSAGE value="Changed ImageChanger to non-ImageView extender, fixed tone" />
     <MESSAGE value="Added new constructor to ImageChanger" />
     <MESSAGE value="minor changes" />
-    <option name="LAST_COMMIT_MESSAGE" value="minor changes" />
+    <MESSAGE value="added black-and-white conversion, fixed brightness and tone fo sure" />
+    <MESSAGE value="improved histograms and efficiency" />
+    <option name="LAST_COMMIT_MESSAGE" value="improved histograms and efficiency" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
