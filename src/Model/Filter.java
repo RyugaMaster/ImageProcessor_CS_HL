@@ -8,7 +8,7 @@ class Filter {
 
     Filter() {
         this.brightness = 1D;
-        this.tone = 0.5;
+        this.tone = 0D;
         this.isGrayscale = false;
         isBV = false;
     }
