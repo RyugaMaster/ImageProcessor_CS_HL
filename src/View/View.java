@@ -37,6 +37,8 @@ public class View extends Application {
         img = new ImageView(imageChanger.getImage());
         System.out.println(field);
         field.getChildren().add(img);
+        img.setFitWidth(1366);
+        img.setFitHeight(768);
     }
 
     /*public static void main(String[] args) {
