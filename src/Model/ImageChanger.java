@@ -1,13 +1,17 @@
 package Model;
 
 import javafx.embed.swing.SwingFXUtils;
-import javafx.scene.image.*;
+import javafx.scene.image.Image;
+import javafx.scene.image.PixelReader;
+import javafx.scene.image.PixelWriter;
+import javafx.scene.image.WritableImage;
 import javafx.scene.paint.Color;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 
 public class ImageChanger {
 
@@ -240,10 +244,20 @@ public class ImageChanger {
         return histogram;
     }
 
+    public void setImage() {
+        InputStream inputStream = this.getClass().getResourceAsStream("white.jpg");
+        this.defaultImage = new Image(inputStream);
+        this.currentImage = this.defaultImage;
+    }
+
     //set image from url
     public void setImage(String url) {
         this.defaultImage = new Image(url);
-        this.currentImage = this.defaultImage;
+        this.currentImage = Jarvis.process(this.defaultImage);
+    }
+
+    public void setImage(File f){
+        setImage(f.toURI().toString());
     }
 
     public void setImage(Image image) {
@@ -264,6 +278,18 @@ public class ImageChanger {
             ImageIO.write(bImage, "png", outputFile);
         } catch (IOException e) {
             throw new RuntimeException(e);
+        }
+    }
+
+    public void saveImage(File f) throws RuntimeException, IOException {
+        File outputFile = f;
+        if (outputFile.createNewFile()) {
+            BufferedImage bImage = SwingFXUtils.fromFXImage(this.getImage(), null);
+            try {
+                ImageIO.write(bImage, "png", outputFile);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
         }
     }
 }
