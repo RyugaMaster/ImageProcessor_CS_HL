@@ -1,14 +1,16 @@
 package Model;
 
-public class Filter {
+class Filter {
     private double brightness;
     private double tone;
     private boolean isGrayscale;
+    private boolean isBV;
 
-    public Filter() {
+    Filter() {
         this.brightness = 1D;
-        this.tone = 0.5D;
+        this.tone = 0D;
         this.isGrayscale = false;
+        isBV = false;
     }
 
     void setBrightness(double brightness) {
@@ -33,5 +35,13 @@ public class Filter {
 
     boolean isGrayscale() {
         return isGrayscale;
+    }
+
+    void setBV(boolean BV) {
+        isBV = BV;
+    }
+
+    boolean isBV() {
+        return isBV;
     }
 }
