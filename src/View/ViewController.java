@@ -94,12 +94,14 @@ public class ViewController {
     }
 
     private void handleHueChangeAction(double a) {
+        System.out.println("Hue: " + a);
         Controller.hueChange(a);
     }
 
     ;
 
     private void handleBrightnessChangeAction(double a) {
+        System.out.println("Brightness: " + a);
         Controller.brightnessChange(a);
     }
 

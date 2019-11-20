@@ -63,7 +63,7 @@ public class Controller {
     }
 
     public static void brightnessChange(double a) {
-        imageChanger.applyBrightness(a);
+        imageChanger.setBrightness(a);
         View.View.read();
     }
 }
