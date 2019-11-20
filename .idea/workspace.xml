@@ -2,9 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="97285ef4-5d9f-4caa-90fa-95748bcebd0d" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/ImageProcessor_CS_HL.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/ImageProcessor_CS_HL.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/lib.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/lib.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Model/Dithering.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Model/ImageChanger.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Model/ImageChanger.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/View/View.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/View/View.java" afterDir="false" />
@@ -60,6 +58,7 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="Class" />
+        <option value="Enum" />
       </list>
     </option>
   </component>
@@ -287,7 +286,14 @@
       <option name="project" value="LOCAL" />
       <updated>1573978823221</updated>
     </task>
-    <option name="localTasksCounter" value="9" />
+    <task id="LOCAL-00009" summary="added histogram for total distribution, increased efficiency">
+      <created>1574231264212</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1574231264213</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
@@ -320,7 +326,8 @@
     <MESSAGE value="minor changes" />
     <MESSAGE value="added black-and-white conversion, fixed brightness and tone fo sure" />
     <MESSAGE value="improved histograms and efficiency" />
-    <option name="LAST_COMMIT_MESSAGE" value="improved histograms and efficiency" />
+    <MESSAGE value="added histogram for total distribution, increased efficiency" />
+    <option name="LAST_COMMIT_MESSAGE" value="added histogram for total distribution, increased efficiency" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -331,9 +338,9 @@
           <option name="timeStamp" value="3" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/Model/ImageChanger.java</url>
-          <line>244</line>
-          <option name="timeStamp" value="9" />
+          <url>file://$PROJECT_DIR$/src/View/View.java</url>
+          <line>38</line>
+          <option name="timeStamp" value="14" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

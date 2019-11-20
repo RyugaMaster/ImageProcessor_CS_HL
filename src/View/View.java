@@ -1,5 +1,6 @@
 package View;
 
+import Model.Dithering;
 import Model.ImageChanger;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -34,8 +35,20 @@ public class View extends Application {
         primaryStage.setScene(new Scene(root, 1600, 900));
         primaryStage.show();
         AnchorPane field = viewController.pane;
+        imageChanger.setImage("file:C:\\Users\\obole\\Downloads\\scenery.jpeg");
+        imageChanger.setBrightness(1.2);
+        imageChanger.setTone(0.6);
+        imageChanger.toGrayScale();
+        imageChanger.toBV();
+        int sum = 0;
+        for(int i = 0; i < 10; i++) {
+            long a = System.currentTimeMillis();
+            imageChanger.setDitheringType(Dithering.JARVIS);
+            sum += System.currentTimeMillis() - a;
+            imageChanger.setDitheringType(Dithering.BURKES);
+        }
+        System.out.println(sum / 10);
         img = new ImageView(imageChanger.getImage());
-        System.out.println(field);
         field.getChildren().add(img);
     }
 

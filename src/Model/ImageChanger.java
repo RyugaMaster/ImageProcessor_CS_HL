@@ -5,7 +5,6 @@ import javafx.scene.image.Image;
 import javafx.scene.image.PixelReader;
 import javafx.scene.image.PixelWriter;
 import javafx.scene.image.WritableImage;
-import javafx.scene.paint.Color;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
@@ -19,7 +18,8 @@ public class ImageChanger {
     private Image currentImage;
     private Filter filter;
     private double[][] grayscaleCoefficients;
-    private int[][] colorDistribution = new int[4][256];
+    private int[][] colorDistribution;
+    private Dithering ditheringType = Dithering.BURKES;
 
     //create ImageChanger of image from specified url
     public ImageChanger(String url) {
@@ -42,6 +42,13 @@ public class ImageChanger {
         initializeGrayscaleCoefficients();
     }
 
+    //change th algorithm of black-and-white conversion
+    public void setDitheringType(Dithering type) {
+        this.ditheringType = type;
+        if(this.filter.isBV())
+            this.applyFilter();
+    }
+
     private void initializeGrayscaleCoefficients() {
         this.grayscaleCoefficients = new double[3][256];
         for(int i = 0; i < 256; i++)
@@ -52,6 +59,34 @@ public class ImageChanger {
 
         for(int i = 0; i < 256; i++)
             this.grayscaleCoefficients[2][i] = 0.0722 * i;
+    }
+
+    //calculate histograms when image is uploaded
+    private void initializeColorDistribution() {
+        Image sourceImage = this.currentImage;
+
+        PixelReader pixelReader = sourceImage.getPixelReader();
+
+        int width = (int) sourceImage.getWidth();
+        int height = (int) sourceImage.getHeight();
+        int red, green, blue;
+
+        colorDistribution = new int[4][256];
+
+        for (int x = 0; x < width; x++) {
+            for (int y = 0; y < height; y++) {
+                int pixel = pixelReader.getArgb(x, y);
+
+                red = ((pixel >> 16) & 0xff);
+                green = ((pixel >> 8) & 0xff);
+                blue = (pixel & 0xff);
+
+                colorDistribution[0][(red + green + blue) / 3]++;
+                colorDistribution[1][red]++;
+                colorDistribution[2][green]++;
+                colorDistribution[3][blue]++;
+            }
+        }
     }
 
     //return image to initial state
@@ -80,6 +115,7 @@ public class ImageChanger {
 
         int[] argb = new int[4];
         int[][] carry = new int[width][height];
+        double[] errorMultipliers = getErrorMultipliers();
 
         colorDistribution = new int[4][256];
 
@@ -95,7 +131,7 @@ public class ImageChanger {
                 if(tone != 0D) getTonedPixel(argb, tone);
                 if(brightness != 1) getBrightPixel(argb, brightness);
                 if(isGrayscale) getGrayScalePixel(argb);
-                if(isBV) getBVPixel(argb, x, y, carry);
+                if(isBV) getBVPixel(argb, x, y, carry, errorMultipliers);
 
                 colorDistribution[0][(argb[1] + argb[2] + argb[3]) / 3]++;
                 colorDistribution[1][argb[1]]++;
@@ -131,7 +167,7 @@ public class ImageChanger {
     }
 
     //set pixel with specified argb to black-and-white
-    private void getBVPixel(int[] argb, int x, int y, int[][] carry) {
+    private void getBVPixel(int[] argb, int x, int y, int[][] carry, double[] errorMultipliers) {
         int pixelColor = (argb[1] + argb[2] + argb[3]) / 3 + carry[x][y];
         int error;
         int width = carry.length;
@@ -150,13 +186,33 @@ public class ImageChanger {
             argb[3] = 255;
         }
 
-        if(pointInBounds(x + 1, y, width, height)) carry[x + 1][y] += error >> 2;
-        if(pointInBounds(x + 2, y, width, height)) carry[x + 2][y] += error >> 3;
-        if(pointInBounds(x + 1, y + 1, width, height)) carry[x + 1][y + 1] += error >> 3;
-        if(pointInBounds(x + 2, y + 1, width, height)) carry[x + 2][y + 1] += error >> 4;
-        if(pointInBounds(x, y + 1, width, height)) carry[x][y + 1] += error >> 2;
-        if(pointInBounds(x - 1, y + 1, width, height)) carry[x - 1][y + 1] += error >> 3;
-        if(pointInBounds(x - 2, y + 1, width, height)) carry[x - 2][y + 1] += error >> 4;
+        pushError(x, y, error, carry, width, height, errorMultipliers);
+    }
+
+    private double[] getErrorMultipliers() {
+        return this.ditheringType.getErrorMultipliers();
+    }
+
+    private void pushError(int x, int y, int error, int[][] carry, int width, int height, double[] errorMultipliers) {
+        if(ditheringType == Dithering.BURKES)
+            pushErrorBurkes(x, y, error, carry, width, height, errorMultipliers);
+        else pushErrorJarvis(x, y, error, carry, width, height, errorMultipliers);
+    }
+
+    private void pushErrorBurkes(int x, int y, int error, int[][] carry, int width, int height, double[] errorMultipliers) {
+        for(int i = Math.max(x - 2, 0); i < x + 3 && i < width ; i++) {
+            for (int j = y; j < y + 2 && j < height; j++) {
+                carry[i][j] += errorMultipliers[Math.abs(i - x) + Math.abs(j - y)] * error;
+            }
+        }
+    }
+
+    private void pushErrorJarvis(int x, int y, int error, int[][] carry, int width, int height, double[] errorMultipliers) {
+        for(int i = Math.max(x - 2, 0); i < x + 3 && i < width ; i++) {
+            for (int j = y; j < y + 3 && j < height; j++) {
+                carry[i][j] += errorMultipliers[Math.abs(i - x) + Math.abs(j - y)] * error;
+            }
+        }
     }
 
     //change filter to grayscale
@@ -204,11 +260,6 @@ public class ImageChanger {
         this.applyFilter();
     }
 
-    //check if a pixel is in bounds of an image of specified height and width
-    private boolean pointInBounds(int pointX, int pointY, int maxX, int maxY) {
-        return pointX < maxX && pointY < maxY && pointX >= 0 && pointY >= 0;
-    }
-
     //get distribution of gray across specified number of divisions
     public int[] getHistogramTotal(int divisions) {
         return getHistogram(divisions, 0);
@@ -231,8 +282,6 @@ public class ImageChanger {
 
     //get distribution of red, green, or blue across specified number of divisions
     private int[] getHistogram(int divisions, int colorNumber) {
-        Image sourceImage = this.getImage();
-
         int divisionSize = 256 / divisions;
         int divisionRatio = 256 % divisions;
 
@@ -251,16 +300,19 @@ public class ImageChanger {
         return histogram;
     }
 
+    //set empty image
     public void setImage() {
         InputStream inputStream = this.getClass().getResourceAsStream("white.jpg");
         this.defaultImage = new Image(inputStream);
         this.currentImage = this.defaultImage;
+        initializeColorDistribution();
     }
 
     //set image from url
     public void setImage(String url) {
         this.defaultImage = new Image(url);
         this.currentImage = this.defaultImage;
+        initializeColorDistribution();
     }
 
     public void setImage(File f){
@@ -270,12 +322,14 @@ public class ImageChanger {
     public void setImage(Image image) {
         this.defaultImage = image;
         this.currentImage = image;
+        initializeColorDistribution();
     }
 
     //get current image
     public Image getImage() {
         return currentImage;
     }
+
 
     //save image to file
     public void saveImage(String path) throws RuntimeException{
