@@ -11,7 +11,6 @@ import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 
 public class ImageChanger {
 
@@ -21,7 +20,6 @@ public class ImageChanger {
 
     public ImageChanger() {
         super();
-        this.setImage();
         filter = new Filter();
     }
 
@@ -204,10 +202,9 @@ public class ImageChanger {
         return histogram;
     }
 
-    public void setImage() {
-        InputStream inputStream = this.getClass().getResourceAsStream("white.jpg");
-        this.defaultImage = new Image(inputStream);
-        this.currentImage = this.defaultImage;
+    public void setImage(Image image) {
+        this.defaultImage = image;
+        this.currentImage = image;
     }
 
     //set image from url
@@ -223,6 +220,10 @@ public class ImageChanger {
     //get current image
     public Image getImage() {
         return currentImage;
+    }
+
+    public Image getDefaultImage() {
+        return defaultImage;
     }
 
     //save image to file

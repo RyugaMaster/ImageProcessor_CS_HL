@@ -4,8 +4,8 @@ import Model.ImageChanger;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.control.Slider;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
@@ -13,6 +13,8 @@ public class View extends Application {
 
     static Stage stage;
     static private ImageView img;
+    static private ImageView src;
+    static private ImageView proc;
     static private ImageChanger imageChanger;
 
     public static void start(String[] args, ImageChanger _imageChanger) {
@@ -21,7 +23,9 @@ public class View extends Application {
     }
 
     public static void read() {
+        src.setImage(imageChanger.getDefaultImage());
         img.setImage(imageChanger.getImage());
+        proc.setImage(imageChanger.getImage());
     }
 
     @Override
@@ -33,12 +37,19 @@ public class View extends Application {
         primaryStage.setTitle("Hello World");
         primaryStage.setScene(new Scene(root, 1600, 900));
         primaryStage.show();
-        AnchorPane field = viewController.pane;
-        img = new ImageView(imageChanger.getImage());
-        System.out.println(field);
-        field.getChildren().add(img);
-        img.setFitWidth(1366);
-        img.setFitHeight(768);
+        img = viewController.img;
+        src = viewController.src;
+        proc = viewController.proc;
+        Slider hue = viewController.hue;
+        Slider brightness = viewController.brightness;
+        hue.setMax(1);
+        hue.setMin(0);
+        hue.setValue(0.5);
+        brightness.setMin(0.5);
+        brightness.setMax(2);
+        brightness.setValue(1);
+        // img.setFitWidth(1366);
+        //img.setFitHeight(768);
     }
 
     /*public static void main(String[] args) {

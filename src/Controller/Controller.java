@@ -1,6 +1,7 @@
 package Controller;
 
 import Model.ImageChanger;
+import View.Dialogs;
 
 import java.io.File;
 import java.io.IOException;
@@ -40,5 +41,29 @@ public class Controller {
 
     public static void quit() {
 
+    }
+
+    public static void toDefault() {
+        if (Dialogs.approveAction("Return to source image?")) {
+            imageChanger.toDefault();
+            View.View.read();
+        }
+    }
+
+    public static void toProccesed() {
+        if (Dialogs.approveAction("Work on processed image?")) {
+            imageChanger.setImage(imageChanger.getImage());
+            View.View.read();
+        }
+    }
+
+    public static void hueChange(double a) {
+        imageChanger.setTone(a);
+        View.View.read();
+    }
+
+    public static void brightnessChange(double a) {
+        imageChanger.applyBrightness(a);
+        View.View.read();
     }
 }

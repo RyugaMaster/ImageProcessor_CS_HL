@@ -1,18 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.chart.*?>
 <?import javafx.scene.control.*?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.VBox?>
-<VBox prefHeight="400.0" prefWidth="640.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="View.ViewController">
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.*?>
+<VBox xmlns:fx="http://javafx.com/fxml/1" prefHeight="900.0" prefWidth="1600.0" xmlns="http://javafx.com/javafx/11.0.1"
+      fx:controller="View.ViewController">
   <children>
     <MenuBar VBox.vgrow="NEVER">
       <menus>
         <Menu mnemonicParsing="false" text="File">
           <items>
-            <MenuItem fx:id = "open" mnemonicParsing="false" text="Open…" onAction="#handleOpenAction"/>
-            <MenuItem fx:id = "save" mnemonicParsing="false" text="Save" onAction="#handleSaveAction"/>
-            <MenuItem fx:id = "saveAs" mnemonicParsing="false" text="Save As…" onAction="#handleSaveAsAction"/>
-            <MenuItem fx:id = "quit" mnemonicParsing="false" text="Quit" onAction="#handleQuitAction"/>
+              <MenuItem fx:id="open" mnemonicParsing="false" onAction="#handleOpenAction" text="Open…"/>
+              <MenuItem fx:id="save" mnemonicParsing="false" onAction="#handleSaveAction" text="Save"/>
+              <MenuItem fx:id="saveAs" mnemonicParsing="false" onAction="#handleSaveAsAction" text="Save As…"/>
+              <MenuItem fx:id="quit" mnemonicParsing="false" onAction="#handleQuitAction" text="Quit"/>
           </items>
         </Menu>
         <Menu mnemonicParsing="false" text="Edit" />
@@ -23,7 +25,67 @@
         </Menu>
       </menus>
     </MenuBar>
-    <AnchorPane fx:id="pane" maxHeight="-1.0" maxWidth="-1.0" prefHeight="-1.0" prefWidth="-1.0" VBox.vgrow="ALWAYS">
-    </AnchorPane>
+      <HBox VBox.vgrow="ALWAYS">
+          <children>
+              <VBox>
+                  <children>
+                      <ImageView fx:id="img" fitHeight="762.0" fitWidth="1355.0" pickOnBounds="true">
+                      </ImageView>
+                      <HBox prefHeight="250.0" prefWidth="1355.0">
+                          <children>
+                              <Slider orientation="HORIZONTAL" fx:id="hue" prefHeight="50.0" prefWidth="100.0"/>
+                              <Slider orientation="HORIZONTAL" fx:id="brightness" prefHeight="50.0" prefWidth="100.0"/>
+                              <VBox prefHeight="200.0" prefWidth="100.0">
+                                  <children>
+                                      <CheckBox fx:id="bnw" mnemonicParsing="false" text="CheckBox"/>
+                                      <CheckBox fx:id="gs" mnemonicParsing="false" text="CheckBox"/>
+                                  </children>
+                              </VBox>
+                              <ImageView fx:id="src" onMouseClicked="#handleToDefaultAction" fitHeight="150.0"
+                                         fitWidth="200.0" pickOnBounds="true"/>
+                              <ImageView fx:id="proc" onMouseClicked="#handleToProcessedAction" fitHeight="150.0"
+                                         fitWidth="200.0" pickOnBounds="true"/>
+                          </children>
+                      </HBox>
+                  </children>
+              </VBox>
+              <VBox prefHeight="200.0" prefWidth="100.0">
+                  <children>
+                      <BarChart fx:id="redChart">
+                          <xAxis>
+                              <CategoryAxis side="BOTTOM"/>
+                          </xAxis>
+                          <yAxis>
+                              <NumberAxis side="LEFT"/>
+                          </yAxis>
+                      </BarChart>
+                      <BarChart fx:id="greenChart">
+                          <xAxis>
+                              <CategoryAxis side="BOTTOM"/>
+                          </xAxis>
+                          <yAxis>
+                              <NumberAxis side="LEFT"/>
+                          </yAxis>
+                      </BarChart>
+                      <BarChart fx:id="blueChart">
+                          <xAxis>
+                              <CategoryAxis side="BOTTOM"/>
+                          </xAxis>
+                          <yAxis>
+                              <NumberAxis side="LEFT"/>
+                          </yAxis>
+                      </BarChart>
+                      <BarChart fx:id="allChart">
+                          <xAxis>
+                              <CategoryAxis side="BOTTOM"/>
+                          </xAxis>
+                          <yAxis>
+                              <NumberAxis side="LEFT"/>
+                          </yAxis>
+                      </BarChart>
+                  </children>
+              </VBox>
+          </children>
+      </HBox>
   </children>
 </VBox>
