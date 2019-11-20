@@ -1,13 +1,17 @@
 package Model;
 
 import javafx.embed.swing.SwingFXUtils;
-import javafx.scene.image.*;
+import javafx.scene.image.Image;
+import javafx.scene.image.PixelReader;
+import javafx.scene.image.PixelWriter;
+import javafx.scene.image.WritableImage;
 import javafx.scene.paint.Color;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 
 public class ImageChanger {
 
@@ -15,6 +19,7 @@ public class ImageChanger {
     private Image currentImage;
     private Filter filter;
     private double[][] grayscaleCoefficients;
+    private int[][] colorDistribution = new int[4][256];
 
     //create ImageChanger of image from specified url
     public ImageChanger(String url) {
@@ -26,6 +31,7 @@ public class ImageChanger {
     //create empty ImageChanger
     public ImageChanger() {
         this.filter = new Filter();
+        this.setImage();
         initializeGrayscaleCoefficients();
     }
 
@@ -75,6 +81,8 @@ public class ImageChanger {
         int[] argb = new int[4];
         int[][] carry = new int[width][height];
 
+        colorDistribution = new int[4][256];
+
         for (int x = 0; x < width; x++) {
             for (int y = 0; y < height; y++) {
                 int pixel = pixelReader.getArgb(x, y);
@@ -88,6 +96,11 @@ public class ImageChanger {
                 if(brightness != 1) getBrightPixel(argb, brightness);
                 if(isGrayscale) getGrayScalePixel(argb);
                 if(isBV) getBVPixel(argb, x, y, carry);
+
+                colorDistribution[0][(argb[1] + argb[2] + argb[3]) / 3]++;
+                colorDistribution[1][argb[1]]++;
+                colorDistribution[2][argb[2]]++;
+                colorDistribution[3][argb[3]]++;
 
                 int changedPixel = (argb[0] << 24) | (argb[1] << 16) | (argb[2] << 8) | argb[3];
                 pixelWriter.setArgb(x, y, changedPixel);
@@ -196,54 +209,62 @@ public class ImageChanger {
         return pointX < maxX && pointY < maxY && pointX >= 0 && pointY >= 0;
     }
 
+    //get distribution of gray across specified number of divisions
+    public int[] getHistogramTotal(int divisions) {
+        return getHistogram(divisions, 0);
+    }
+
     //get distribution of red across specified number of divisions
     public int[] getHistogramRed(int divisions) {
-        return getHistogram(divisions, Color.RED);
+        return getHistogram(divisions, 1);
     }
 
     //get distribution of green across specified number of divisions
     public int[] getHistogramGreen(int divisions) {
-        return getHistogram(divisions, Color.GREEN);
+        return getHistogram(divisions, 2);
     }
 
     //get distribution of blue across specified number of divisions
     public int[] getHistogramBlue(int divisions) {
-        return getHistogram(divisions, Color.BLUE);
+        return getHistogram(divisions, 3);
     }
 
     //get distribution of red, green, or blue across specified number of divisions
-    private int[] getHistogram(int divisions, Color color) {
+    private int[] getHistogram(int divisions, int colorNumber) {
         Image sourceImage = this.getImage();
-        PixelReader pixelReader = sourceImage.getPixelReader();
 
         int divisionSize = 256 / divisions;
         int divisionRatio = 256 % divisions;
 
-        int width = (int)sourceImage.getWidth();
-        int height = (int)sourceImage.getHeight();
         int[] histogram = new int[divisions];
-        for (int x = 0; x < width; x++) {
-            for (int y = 0; y < height; y++) {
-                int pixel = pixelReader.getArgb(x, y);
+        int startingValue = 0;
+        int currentDivisionSize;
+        int finalValue;
 
-                int colorValue;
-                if(color == Color.RED) colorValue = ((pixel >> 16) & 0xff);
-                else if(color == Color.GREEN) colorValue = ((pixel >> 8) & 0xff);
-                else colorValue = (pixel & 0xff);
-
-                int divisionNumber = colorValue / (divisionSize + 1);
-                if(divisionNumber >= divisionRatio)
-                    divisionNumber = (colorValue - (divisionSize + 1) * divisionRatio) / divisionSize + divisionRatio;
-                histogram[divisionNumber]++;
-            }
+        for(int i = 0; i < divisions; i++) {
+            currentDivisionSize = i < divisionRatio ? divisionSize + 1 : divisionSize;
+            finalValue = currentDivisionSize + startingValue - 1;
+            for(int j = startingValue; j <= finalValue; j++)
+                histogram[i] += colorDistribution[colorNumber][j];
+            startingValue = finalValue + 1;
         }
         return histogram;
+    }
+
+    public void setImage() {
+        InputStream inputStream = this.getClass().getResourceAsStream("white.jpg");
+        this.defaultImage = new Image(inputStream);
+        this.currentImage = this.defaultImage;
     }
 
     //set image from url
     public void setImage(String url) {
         this.defaultImage = new Image(url);
         this.currentImage = this.defaultImage;
+    }
+
+    public void setImage(File f){
+        setImage(f.toURI().toString());
     }
 
     public void setImage(Image image) {
@@ -259,11 +280,22 @@ public class ImageChanger {
     //save image to file
     public void saveImage(String path) throws RuntimeException{
         File outputFile = new File(path);
-        BufferedImage bImage = SwingFXUtils.fromFXImage(this.getImage(), null);
         try {
-            ImageIO.write(bImage, "png", outputFile);
-        } catch (IOException e) {
+            this.saveImage(outputFile);
+        }
+        catch(IOException e) {
             throw new RuntimeException(e);
+        }
+    }
+
+    public void saveImage(File f) throws RuntimeException, IOException {
+        if (f.createNewFile()) {
+            BufferedImage bImage = SwingFXUtils.fromFXImage(this.getImage(), null);
+            try {
+                ImageIO.write(bImage, "png", f);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
         }
     }
 }
