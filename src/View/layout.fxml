@@ -4,6 +4,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Font?>
 <VBox xmlns:fx="http://javafx.com/fxml/1" prefHeight="900.0" prefWidth="1600.0" xmlns="http://javafx.com/javafx/11.0.1"
       fx:controller="View.ViewController">
   <children>
@@ -33,54 +34,91 @@
                       </ImageView>
                       <HBox prefHeight="250.0" prefWidth="1355.0">
                           <children>
-                              <Slider orientation="HORIZONTAL" fx:id="hue" prefHeight="50.0" prefWidth="100.0"/>
-                              <Slider orientation="HORIZONTAL" fx:id="brightness" prefHeight="50.0" prefWidth="100.0"/>
                               <VBox prefHeight="200.0" prefWidth="100.0">
                                   <children>
-                                      <CheckBox fx:id="bnw" mnemonicParsing="false" text="CheckBox"/>
-                                      <CheckBox fx:id="gs" mnemonicParsing="false" text="CheckBox"/>
+                                      <Label text="Hue">
+                                          <font>
+                                              <Font size="20.0"/>
+                                          </font>
+                                      </Label>
+                                      <Slider fx:id="hue" orientation="HORIZONTAL" prefHeight="50.0" prefWidth="100.0"/>
                                   </children>
                               </VBox>
-                              <ImageView fx:id="src" onMouseClicked="#handleToDefaultAction" fitHeight="150.0"
-                                         fitWidth="200.0" pickOnBounds="true"/>
-                              <ImageView fx:id="proc" onMouseClicked="#handleToProcessedAction" fitHeight="150.0"
-                                         fitWidth="200.0" pickOnBounds="true"/>
+                              <VBox prefHeight="200.0" prefWidth="100.0">
+                                  <children>
+                                      <Label text="Brightness">
+                                          <font>
+                                              <Font size="20.0"/>
+                                          </font>
+                                      </Label>
+                                      <Slider fx:id="brightness" orientation="HORIZONTAL" prefHeight="50.0"
+                                              prefWidth="100.0"/>
+                                  </children>
+                              </VBox>
+                              <VBox prefHeight="150.0" prefWidth="172.0">
+                                  <children>
+                                      <CheckBox fx:id="bnw" mnemonicParsing="false" onAction="#handleToBNWAction"
+                                                text="Black &amp; White">
+                                          <font>
+                                              <Font size="20.0"/>
+                                          </font>
+                                      </CheckBox>
+                                      <CheckBox fx:id="gs" mnemonicParsing="false" onAction="#handleToGrayscaleAction"
+                                                text="Grayscale">
+                                          <font>
+                                              <Font size="20.0"/>
+                                          </font>
+                                      </CheckBox>
+                                  </children>
+                              </VBox>
+                              <ImageView fx:id="src" fitHeight="150.0" fitWidth="200.0"
+                                         onMouseClicked="#handleToDefaultAction" pickOnBounds="true"/>
+                              <ImageView fx:id="proc" fitHeight="150.0" fitWidth="200.0"
+                                         onMouseClicked="#handleToProcessedAction" pickOnBounds="true"/>
                           </children>
                       </HBox>
                   </children>
               </VBox>
-              <VBox prefHeight="200.0" prefWidth="100.0">
+              <VBox prefHeight="763.0" prefWidth="200.0">
                   <children>
-                      <BarChart fx:id="redChart">
+                      <BarChart fx:id="redChart" legendVisible="false" prefHeight="500.0" prefWidth="200.0"
+                                title="Red magnitude">
                           <xAxis>
                               <CategoryAxis side="BOTTOM"/>
                           </xAxis>
                           <yAxis>
-                              <NumberAxis side="LEFT"/>
+                              <NumberAxis minorTickVisible="false" side="LEFT" tickLabelsVisible="false"
+                                          tickMarkVisible="false"/>
                           </yAxis>
                       </BarChart>
-                      <BarChart fx:id="greenChart">
+                      <BarChart fx:id="greenChart" legendVisible="false" prefHeight="500.0" prefWidth="200.0"
+                                title="Green magnitude">
                           <xAxis>
                               <CategoryAxis side="BOTTOM"/>
                           </xAxis>
                           <yAxis>
-                              <NumberAxis side="LEFT"/>
+                              <NumberAxis minorTickVisible="false" side="LEFT" tickLabelsVisible="false"
+                                          tickMarkVisible="false"/>
                           </yAxis>
                       </BarChart>
-                      <BarChart fx:id="blueChart">
+                      <BarChart fx:id="blueChart" legendVisible="false" prefHeight="500.0" prefWidth="200.0"
+                                title="Blue magnitude">
                           <xAxis>
                               <CategoryAxis side="BOTTOM"/>
                           </xAxis>
                           <yAxis>
-                              <NumberAxis side="LEFT"/>
+                              <NumberAxis minorTickVisible="false" side="LEFT" tickLabelsVisible="false"
+                                          tickMarkVisible="false"/>
                           </yAxis>
                       </BarChart>
-                      <BarChart fx:id="allChart">
+                      <BarChart fx:id="allChart" legendVisible="false" prefHeight="500.0" prefWidth="200.0"
+                                title="Overall magnitude">
                           <xAxis>
                               <CategoryAxis side="BOTTOM"/>
                           </xAxis>
                           <yAxis>
-                              <NumberAxis side="LEFT"/>
+                              <NumberAxis minorTickVisible="false" side="LEFT" tickLabelsVisible="false"
+                                          tickMarkVisible="false"/>
                           </yAxis>
                       </BarChart>
                   </children>

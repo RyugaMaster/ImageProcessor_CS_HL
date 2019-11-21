@@ -36,10 +36,10 @@ public class ViewController {
     ImageView proc;
 
     @FXML
-    CheckBox bnw;
+    private CheckBox bnw;
 
     @FXML
-    CheckBox gs;
+    private CheckBox gs;
 
     @FXML
     Slider hue;
@@ -91,6 +91,23 @@ public class ViewController {
     @FXML
     private void handleToProcessedAction(MouseEvent event) {
         Controller.toProccesed();
+    }
+
+    @FXML
+    private void handleToBNWAction(ActionEvent event) {
+        Controller.bnwChange(bnw.isSelected());
+    }
+
+    @FXML
+    private void handleToGrayscaleAction(ActionEvent event) {
+        Controller.grayscaleChange(gs.isSelected());
+    }
+
+    void reset() {
+        hue.setValue(0.5);
+        brightness.setValue(1);
+        bnw.setSelected(false);
+        gs.setSelected(false);
     }
 
     private void handleHueChangeAction(double a) {

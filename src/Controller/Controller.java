@@ -18,6 +18,7 @@ public class Controller {
     public static void open() {
         File f = View.Dialogs.openImage();
         if (f != null) {
+            View.View.reset();
             file = f;
             imageChanger.setImage(f);
             View.View.read();
@@ -45,6 +46,7 @@ public class Controller {
 
     public static void toDefault() {
         if (Dialogs.approveAction("Return to source image?")) {
+            View.View.reset();
             imageChanger.toDefault();
             View.View.read();
         }
@@ -52,6 +54,7 @@ public class Controller {
 
     public static void toProccesed() {
         if (Dialogs.approveAction("Work on processed image?")) {
+            View.View.reset();
             imageChanger.setImage(imageChanger.getImage());
             View.View.read();
         }
@@ -65,5 +68,23 @@ public class Controller {
     public static void brightnessChange(double a) {
         imageChanger.setBrightness(a);
         View.View.read();
+    }
+
+    public static void bnwChange(boolean a) {
+        if (a)
+            imageChanger.toBV();
+        else
+            imageChanger.undoBV();
+        View.View.read();
+
+    }
+
+    public static void grayscaleChange(boolean a) {
+        if (a)
+            imageChanger.toGrayScale();
+        else
+            imageChanger.undoGrayScale();
+        View.View.read();
+
     }
 }
