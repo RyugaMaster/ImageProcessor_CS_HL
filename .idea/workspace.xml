@@ -1,11 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="97285ef4-5d9f-4caa-90fa-95748bcebd0d" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/Model/Dithering.java" afterDir="false" />
+    <list default="true" id="85c7fb8c-3d93-47f3-a69f-90c97ce11341" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Model/ImageChanger.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Model/ImageChanger.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/View/View.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/View/View.java" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -58,7 +55,6 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="Class" />
-        <option value="Enum" />
       </list>
     </option>
   </component>
@@ -98,7 +94,7 @@
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="dynamic.classpath" value="false" />
-    <property name="last_opened_file_path" value="D:/Java/openjfx-11.0.2_windows-x64_bin-sdk/javafx-sdk-11.0.2/lib" />
+    <property name="last_opened_file_path" value="C:/Program Files/Java/javafx-sdk-13/lib" />
     <property name="project.structure.last.edited" value="Libraries" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.2" />
@@ -117,7 +113,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Application.Main">
+  <component name="RunManager" selected="Application.Main (1)">
     <configuration default="true" type="DartUnitRunConfigurationType" factoryName="DartUnit">
       <option name="VMOptions" />
       <option name="arguments" />
@@ -136,10 +132,18 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="Main" type="Application" factoryName="Application">
+    <configuration name="Main (1)" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="Main" />
       <module name="ImageProcessor_CS_HL" />
-      <option name="VM_PARAMETERS" value="--module-path &quot;D:\javaLibs\openjfx-13.0.1_windows-x64_bin-sdk\javafx-sdk-13.0.1\lib&quot; --add-modules=javafx.controls,javafx.fxml,javafx.base " />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="Main" type="Application" factoryName="Application">
+      <option name="MAIN_CLASS_NAME" value="MainApp" />
+      <module name="ImageProcessor_CS_HL" />
+      <option name="VM_PARAMETERS" value="--module-path &quot;C:\Program Files\Java\javafx-sdk-13\lib&quot; --add-modules=javafx.controls,javafx.fxml,javafx.base " />
       <extension name="coverage">
         <pattern>
           <option name="PATTERN" value="View.*" />
@@ -156,13 +160,6 @@
       <option name="MAIN_CLASS_NAME" value="MainApp" />
       <module name="ImageProcessor_CS_HL" />
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="View" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="View.View" />
-      <module name="ImageProcessor_CS_HL" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -207,11 +204,11 @@
     <list>
       <item itemvalue="Application.Main" />
       <item itemvalue="Application.MainApp" />
-      <item itemvalue="Application.View" />
+      <item itemvalue="Application.Main (1)" />
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Application.View" />
+        <item itemvalue="Application.Main (1)" />
         <item itemvalue="Application.MainApp" />
         <item itemvalue="Application.MainApp" />
         <item itemvalue="Application.MainApp" />
@@ -251,49 +248,84 @@
       <option name="project" value="LOCAL" />
       <updated>1571813830469</updated>
     </task>
-    <task id="LOCAL-00004" summary="Changed ImageChanger to non-ImageView extender, fixed tone">
-      <created>1573192931187</created>
+    <task id="LOCAL-00004" summary="1">
+      <created>1571814004300</created>
       <option name="number" value="00004" />
       <option name="presentableId" value="LOCAL-00004" />
       <option name="project" value="LOCAL" />
-      <updated>1573192931187</updated>
+      <updated>1571814004300</updated>
     </task>
-    <task id="LOCAL-00005" summary="Added new constructor to ImageChanger">
-      <created>1573624944274</created>
+    <task id="LOCAL-00005" summary="Implementing file opener">
+      <created>1573021768473</created>
       <option name="number" value="00005" />
       <option name="presentableId" value="LOCAL-00005" />
       <option name="project" value="LOCAL" />
-      <updated>1573624944274</updated>
+      <updated>1573021768473</updated>
     </task>
-    <task id="LOCAL-00006" summary="minor changes">
-      <created>1573627771839</created>
+    <task id="LOCAL-00006" summary="Implementing file saver">
+      <created>1573193974589</created>
       <option name="number" value="00006" />
       <option name="presentableId" value="LOCAL-00006" />
       <option name="project" value="LOCAL" />
-      <updated>1573627771839</updated>
+      <updated>1573193974589</updated>
     </task>
-    <task id="LOCAL-00007" summary="added black-and-white conversion, fixed brightness and tone fo sure">
-      <created>1573940113520</created>
+    <task id="LOCAL-00007" summary="Merging Obolenskiy into Plisov">
+      <created>1573194974033</created>
       <option name="number" value="00007" />
       <option name="presentableId" value="LOCAL-00007" />
       <option name="project" value="LOCAL" />
-      <updated>1573940113520</updated>
+      <updated>1573194974033</updated>
     </task>
-    <task id="LOCAL-00008" summary="improved histograms and efficiency">
-      <created>1573978823221</created>
+    <task id="LOCAL-00008" summary="Added imageView">
+      <created>1573626965160</created>
       <option name="number" value="00008" />
       <option name="presentableId" value="LOCAL-00008" />
       <option name="project" value="LOCAL" />
-      <updated>1573978823221</updated>
+      <updated>1573626965160</updated>
     </task>
-    <task id="LOCAL-00009" summary="added histogram for total distribution, increased efficiency">
-      <created>1574231264212</created>
+    <task id="LOCAL-00009" summary="Added imageView">
+      <created>1573803652125</created>
       <option name="number" value="00009" />
       <option name="presentableId" value="LOCAL-00009" />
       <option name="project" value="LOCAL" />
-      <updated>1574231264213</updated>
+      <updated>1573803652125</updated>
     </task>
-    <option name="localTasksCounter" value="10" />
+    <task id="LOCAL-00010" summary="Added imageView">
+      <created>1573803692566</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1573803692566</updated>
+    </task>
+    <task id="LOCAL-00011" summary="Added imageView">
+      <created>1574172941008</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1574172941008</updated>
+    </task>
+    <task id="LOCAL-00012" summary="Added imageView">
+      <created>1574233416112</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1574233416112</updated>
+    </task>
+    <task id="LOCAL-00013" summary="Added imageView">
+      <created>1574234040734</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1574234040734</updated>
+    </task>
+    <task id="LOCAL-00014" summary="Added imageView">
+      <created>1574317411049</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1574317411049</updated>
+    </task>
+    <option name="localTasksCounter" value="15" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
@@ -318,29 +350,24 @@
     <ignored-roots>
       <path value="$PROJECT_DIR$" />
     </ignored-roots>
-    <MESSAGE value="Added ImageChanger class and some basic functionality" />
-    <MESSAGE value="Fixed brightness and tone, added all basic functionality except for saving images" />
-    <MESSAGE value="Fixed brightness and tone, added all basic functionality" />
-    <MESSAGE value="Changed ImageChanger to non-ImageView extender, fixed tone" />
-    <MESSAGE value="Added new constructor to ImageChanger" />
-    <MESSAGE value="minor changes" />
-    <MESSAGE value="added black-and-white conversion, fixed brightness and tone fo sure" />
-    <MESSAGE value="improved histograms and efficiency" />
-    <MESSAGE value="added histogram for total distribution, increased efficiency" />
-    <option name="LAST_COMMIT_MESSAGE" value="added histogram for total distribution, increased efficiency" />
+    <MESSAGE value="1" />
+    <MESSAGE value="Modifying View and Control" />
+    <MESSAGE value="Implementing file opener" />
+    <MESSAGE value="Implementing file saver" />
+    <MESSAGE value="Merging Obolenskiy into Plisov" />
+    <MESSAGE value="Added imageView" />
+    <option name="LAST_COMMIT_MESSAGE" value="Added imageView" />
+    <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="true" />
+    <option name="REFORMAT_BEFORE_PROJECT_COMMIT" value="true" />
+    <option name="REARRANGE_BEFORE_PROJECT_COMMIT" value="true" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/View/ViewController.java</url>
-          <line>49</line>
+          <line>138</line>
           <option name="timeStamp" value="3" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/View/View.java</url>
-          <line>38</line>
-          <option name="timeStamp" value="14" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
