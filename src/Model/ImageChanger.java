@@ -1,52 +1,250 @@
 package Model;
 
 import javafx.embed.swing.SwingFXUtils;
-import javafx.scene.image.*;
-import javafx.scene.paint.Color;
+import javafx.scene.image.Image;
+import javafx.scene.image.PixelReader;
+import javafx.scene.image.PixelWriter;
+import javafx.scene.image.WritableImage;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 
 public class ImageChanger {
 
     private Image defaultImage;
     private Image currentImage;
     private Filter filter;
+    private double[][] grayscaleCoefficients;
+    private int[][] colorDistribution;
+    private Dithering ditheringType = Dithering.BURKES;
 
+    //create ImageChanger of image from specified url
     public ImageChanger(String url) {
-        super();
         this.setImage(url);
-        filter = new Filter();
+        this.filter = new Filter();
+        initializeGrayscaleCoefficients();
+    }
+
+    //create empty ImageChanger
+    public ImageChanger() {
+        this.filter = new Filter();
+        this.setImage();
+        initializeGrayscaleCoefficients();
+    }
+
+    //create imageChanger of specified image
+    public ImageChanger(Image image) {
+        this.setImage(image);
+        this.filter = new Filter();
+        initializeGrayscaleCoefficients();
+    }
+
+    //change th algorithm of black-and-white conversion
+    public void setDitheringType(Dithering type) {
+        this.ditheringType = type;
+        if(this.filter.isBV())
+            this.applyFilter();
+    }
+
+    private void initializeGrayscaleCoefficients() {
+        this.grayscaleCoefficients = new double[3][256];
+        for(int i = 0; i < 256; i++)
+            this.grayscaleCoefficients[0][i] = 0.2162 * i;
+
+        for(int i = 0; i < 256; i++)
+            this.grayscaleCoefficients[1][i] = 0.7152 * i;
+
+        for(int i = 0; i < 256; i++)
+            this.grayscaleCoefficients[2][i] = 0.0722 * i;
+    }
+
+    //calculate histograms when image is uploaded
+    private void initializeColorDistribution() {
+        Image sourceImage = this.currentImage;
+
+        PixelReader pixelReader = sourceImage.getPixelReader();
+
+        int width = (int) sourceImage.getWidth();
+        int height = (int) sourceImage.getHeight();
+        int red, green, blue;
+
+        colorDistribution = new int[4][256];
+
+        for (int x = 0; x < width; x++) {
+            for (int y = 0; y < height; y++) {
+                int pixel = pixelReader.getArgb(x, y);
+
+                red = ((pixel >> 16) & 0xff);
+                green = ((pixel >> 8) & 0xff);
+                blue = (pixel & 0xff);
+
+                colorDistribution[0][(red + green + blue) / 3]++;
+                colorDistribution[1][red]++;
+                colorDistribution[2][green]++;
+                colorDistribution[3][blue]++;
+            }
+        }
     }
 
     //return image to initial state
     public void toDefault() {
-        this.filter.setGrayscale(false);
-        this.filter.setBrightness(1);
-        this.filter.setTone(0.5);
+        this.filter = new Filter();
         this.currentImage = defaultImage;
     }
 
     //apply changes to image
     private void applyFilter() {
         this.currentImage = defaultImage;
-        this.applyBrightness(this.filter.getBrightness());
-        this.applyTone(this.filter.getTone());
-        if(this.filter.isGrayscale()) this.applyGrayScale();
+        boolean isGrayscale = this.filter.isGrayscale();
+        double tone = this.filter.getTone();
+        double brightness = this.filter.getBrightness();
+        boolean isBV = this.filter.isBV();
+
+        Image sourceImage = this.currentImage;
+
+        PixelReader pixelReader = sourceImage.getPixelReader();
+
+        int width = (int) sourceImage.getWidth();
+        int height = (int) sourceImage.getHeight();
+
+        WritableImage changedImage = new WritableImage(width, height);
+        PixelWriter pixelWriter = changedImage.getPixelWriter();
+
+        int[] argb = new int[4];
+        int[][] carry = new int[width][height];
+        double[] errorMultipliers = getErrorMultipliers();
+
+        colorDistribution = new int[4][256];
+
+        for (int x = 0; x < width; x++) {
+            for (int y = 0; y < height; y++) {
+                int pixel = pixelReader.getArgb(x, y);
+
+                argb[0] = ((pixel >> 24) & 0xff);
+                argb[1] = ((pixel >> 16) & 0xff);
+                argb[2] = ((pixel >> 8) & 0xff);
+                argb[3] = (pixel & 0xff);
+
+                if(tone != 0D) getTonedPixel(argb, tone);
+                if(brightness != 1) getBrightPixel(argb, brightness);
+                if(isGrayscale) getGrayScalePixel(argb);
+                if(isBV) getBVPixel(argb, x, y, carry, errorMultipliers);
+
+                colorDistribution[0][(argb[1] + argb[2] + argb[3]) / 3]++;
+                colorDistribution[1][argb[1]]++;
+                colorDistribution[2][argb[2]]++;
+                colorDistribution[3][argb[3]]++;
+
+                int changedPixel = (argb[0] << 24) | (argb[1] << 16) | (argb[2] << 8) | argb[3];
+                pixelWriter.setArgb(x, y, changedPixel);
+            }
+        }
+        this.currentImage = changedImage;
+    }
+
+    //tone pixel with specified argb
+    private void getTonedPixel(int[] argb, double tone) {
+        argb[1] = Math.min((int) Math.max((double) argb[1] + tone, 0D), 255);
+        argb[3] = Math.min((int) Math.max((double) argb[3] - tone, 0D), 255);
+    }
+
+    //make pixel with specified argb bright
+    private void getBrightPixel(int[] argb, double brightness) {
+        argb[1] = (int) Math.min((double)argb[1] * brightness, 255D);
+        argb[2] = (int) Math.min((double)argb[2] * brightness, 255D);
+        argb[3] = (int) Math.min((double)argb[3] * brightness, 255D);
+    }
+
+    //set pixel with specified argb to grayscale
+    private void getGrayScalePixel(int[] argb) {
+        int gray = (int) (grayscaleCoefficients[0][argb[1]] + grayscaleCoefficients[1][argb[2]] + grayscaleCoefficients[2][argb[3]]) / 3;
+        argb[1] = gray;
+        argb[2] = gray;
+        argb[3] = gray;
+    }
+
+    //set pixel with specified argb to black-and-white
+    private void getBVPixel(int[] argb, int x, int y, int[][] carry, double[] errorMultipliers) {
+        int pixelColor = (argb[1] + argb[2] + argb[3]) / 3 + carry[x][y];
+        int error;
+        int width = carry.length;
+        int height = carry[0].length;
+
+        if(pixelColor < 128) {
+            error = pixelColor;
+            argb[1] = 0;
+            argb[2] = 0;
+            argb[3] = 0;
+        }
+        else {
+            error = pixelColor - 255;
+            argb[1] = 255;
+            argb[2] = 255;
+            argb[3] = 255;
+        }
+
+        pushError(x, y, error, carry, width, height, errorMultipliers);
+    }
+
+    private double[] getErrorMultipliers() {
+        return this.ditheringType.getErrorMultipliers();
+    }
+
+    private void pushError(int x, int y, int error, int[][] carry, int width, int height, double[] errorMultipliers) {
+        if(ditheringType == Dithering.BURKES)
+            pushErrorBurkes(x, y, error, carry, width, height, errorMultipliers);
+        else pushErrorJarvis(x, y, error, carry, width, height, errorMultipliers);
+    }
+
+    private void pushErrorBurkes(int x, int y, int error, int[][] carry, int width, int height, double[] errorMultipliers) {
+        for(int i = Math.max(x - 2, 0); i < x + 3 && i < width ; i++) {
+            for (int j = y; j < y + 2 && j < height; j++) {
+                carry[i][j] += errorMultipliers[Math.abs(i - x) + Math.abs(j - y)] * error;
+            }
+        }
+    }
+
+    private void pushErrorJarvis(int x, int y, int error, int[][] carry, int width, int height, double[] errorMultipliers) {
+        for(int i = Math.max(x - 2, 0); i < x + 3 && i < width ; i++) {
+            for (int j = y; j < y + 3 && j < height; j++) {
+                carry[i][j] += errorMultipliers[Math.abs(i - x) + Math.abs(j - y)] * error;
+            }
+        }
     }
 
     //change filter to grayscale
     public void toGrayScale() {
-        this.filter.setGrayscale(true);
-        this.applyFilter();
+        if(!this.filter.isGrayscale()) {
+            this.filter.setGrayscale(true);
+            this.applyFilter();
+        }
     }
 
     //change image back from grayscale
     public void undoGrayScale() {
-        this.filter.setGrayscale(false);
-        this.applyFilter();
+        if(this.filter.isGrayscale()) {
+            this.filter.setGrayscale(false);
+            this.applyFilter();
+        }
+    }
+
+    //change filter to black-and-white
+    public void toBV() {
+        if(!this.filter.isBV()) {
+            this.filter.setBV(true);
+            this.applyFilter();
+        }
+    }
+
+    //change image back from black-and-white
+    public void undoBV() {
+        if(this.filter.isBV()) {
+            this.filter.setBV(false);
+            this.applyFilter();
+        }
     }
 
     //change filter brightness
@@ -57,153 +255,75 @@ public class ImageChanger {
 
     //change filter tone
     public void setTone(double tone) {
+        tone = 510 * tone - 255;
         this.filter.setTone(tone);
         this.applyFilter();
     }
 
-    //set image to grayscale
-    private void applyGrayScale() {
-        Image sourceImage = this.currentImage;
-
-        PixelReader pixelReader = sourceImage.getPixelReader();
-
-        int width = (int) sourceImage.getWidth();
-        int height = (int) sourceImage.getHeight();
-
-        WritableImage grayImage = new WritableImage(width, height);
-
-        PixelWriter pixelWriter = grayImage.getPixelWriter();
-        for (int x = 0; x < width; x++) {
-            for (int y = 0; y < height; y++) {
-                int pixel = pixelReader.getArgb(x, y);
-
-                int red = ((pixel >> 16) & 0xff);
-                int green = ((pixel >> 8) & 0xff);
-                int blue = (pixel & 0xff);
-
-                int grayLevel = (int) (0.2162 * (double)red + 0.7152 * (double)green + 0.0722 * (double)blue) / 3;
-                grayLevel = 255 - grayLevel;
-                int grayPixel = (grayLevel << 16) + (grayLevel << 8) + grayLevel;
-
-                pixelWriter.setArgb(x, y, -grayPixel);
-            }
-        }
-        this.currentImage = grayImage;
-    }
-
-    //change brightness of image according to filter
-    public void applyBrightness(double brightness) {
-        Image sourceImage = this.currentImage;
-
-        PixelReader pixelReader = sourceImage.getPixelReader();
-
-        int width = (int)sourceImage.getWidth();
-        int height = (int)sourceImage.getHeight();
-
-        WritableImage brightImage = new WritableImage(width, height);
-
-        PixelWriter pixelWriter = brightImage.getPixelWriter();
-        for (int x = 0; x < width; x++) {
-            for (int y = 0; y < height; y++) {
-                int pixel = pixelReader.getArgb(x, y);
-
-                int red = ((pixel >> 16) & 0xff);
-                int green = ((pixel >> 8) & 0xff);
-                int blue = (pixel & 0xff);
-
-                int brightRed = 255 - (int) Math.min((double)red * brightness, 255D);
-                int brightGreen = 255 - (int) Math.min((double)green * brightness, 255D);
-                int brightBlue = 255 - (int) Math.min((double)blue * brightness, 255D);
-                int brightPixel = (brightRed << 16) + (brightGreen << 8) + brightBlue;
-                if(brightPixel == 0 && pixel != 0 && brightness >= 1)
-                    pixelWriter.setColor(x, y, Color.WHITE);
-                else pixelWriter.setArgb(x, y, -brightPixel);
-            }
-        }
-        this.currentImage = brightImage;
-    }
-
-    //change tone of image according to filter
-    private void applyTone(double tone) {
-        Image sourceImage = this.getImage();
-
-        tone = 510 * tone - 255;
-
-        PixelReader pixelReader = sourceImage.getPixelReader();
-
-        int width = (int)sourceImage.getWidth();
-        int height = (int)sourceImage.getHeight();
-
-        WritableImage tonedImage = new WritableImage(width, height);
-
-        PixelWriter pixelWriter = tonedImage.getPixelWriter();
-        for (int x = 0; x < width; x++) {
-            for (int y = 0; y < height; y++) {
-
-                int pixel = pixelReader.getArgb(x, y);
-
-                int red = ((pixel >> 16) & 0xff);
-                int green = ((pixel >> 8) & 0xff);
-                int blue = (pixel & 0xff);
-
-                int TonedRed = 255 - Math.max((int)Math.min((double)red + tone, 255D), 0);
-                int TonedGreen = 255 - green;
-                int TonedBlue = 255 - Math.min((int)Math.max((double)blue - tone, 0D), 255);
-                int toned = 255 - (TonedRed << 16) - (TonedGreen << 8) - TonedBlue;
-
-                pixelWriter.setArgb(x, y, toned);
-            }
-        }
-        this.currentImage = tonedImage;
+    //get distribution of gray across specified number of divisions
+    public int[] getHistogramTotal(int divisions) {
+        return getHistogram(divisions, 0);
     }
 
     //get distribution of red across specified number of divisions
     public int[] getHistogramRed(int divisions) {
-        return getHistogram(divisions, Color.RED);
+        return getHistogram(divisions, 1);
     }
 
     //get distribution of green across specified number of divisions
     public int[] getHistogramGreen(int divisions) {
-        return getHistogram(divisions, Color.GREEN);
+        return getHistogram(divisions, 2);
     }
 
     //get distribution of blue across specified number of divisions
     public int[] getHistogramBlue(int divisions) {
-        return getHistogram(divisions, Color.BLUE);
+        return getHistogram(divisions, 3);
     }
 
-    //get distribution of a color across specified number of divisions
-    private int[] getHistogram(int divisions, Color color) {
-        Image sourceImage = this.getImage();
-        PixelReader pixelReader = sourceImage.getPixelReader();
-
-        int divisionSize = 255 / divisions;
-
-        int width = (int)sourceImage.getWidth();
-        int height = (int)sourceImage.getHeight();
+    //get distribution of red, green, or blue across specified number of divisions
+    private int[] getHistogram(int divisions, int colorNumber) {
+        int divisionSize = 256 / divisions;
+        int divisionRatio = 256 % divisions;
 
         int[] histogram = new int[divisions];
-        for (int x = 0; x < width; x++) {
-            for (int y = 0; y < height; y++) {
-                int pixel = pixelReader.getArgb(x, y);
+        int startingValue = 0;
+        int currentDivisionSize;
+        int finalValue;
 
-                int colorValue;
-                if(color == Color.RED) colorValue = ((pixel >> 16) & 0xff);
-                else if(color == Color.GREEN) colorValue = ((pixel >> 8) & 0xff);
-                else colorValue = (pixel & 0xff);
-
-                int divisionNumber = colorValue / divisionSize;
-                if(divisionNumber == divisions) divisionNumber--;
-                histogram[divisionNumber]++;
-            }
+        for(int i = 0; i < divisions; i++) {
+            currentDivisionSize = i < divisionRatio ? divisionSize + 1 : divisionSize;
+            finalValue = currentDivisionSize + startingValue - 1;
+            for(int j = startingValue; j <= finalValue; j++)
+                histogram[i] += colorDistribution[colorNumber][j];
+            startingValue = finalValue + 1;
         }
         return histogram;
     }
 
+    //set empty image
+    public void setImage() {
+        InputStream inputStream = this.getClass().getResourceAsStream("white.jpg");
+        this.defaultImage = new Image(inputStream);
+        this.currentImage = this.defaultImage;
+        initializeColorDistribution();
+    }
+
     //set image from url
     public void setImage(String url) {
+        this.filter = new Filter();
         this.defaultImage = new Image(url);
         this.currentImage = this.defaultImage;
+        initializeColorDistribution();
+    }
+
+    public void setImage(File f){
+        setImage(f.toURI().toString());
+    }
+
+    public void setImage(Image image) {
+        this.defaultImage = image;
+        this.currentImage = image;
+        initializeColorDistribution();
     }
 
     //get current image
@@ -211,16 +331,30 @@ public class ImageChanger {
         return currentImage;
     }
 
+
     //save image to file
-    public void saveImage(String path) throws RuntimeException, IOException {
+    public void saveImage(String path) throws RuntimeException{
         File outputFile = new File(path);
-        if(outputFile.createNewFile()) {
+        try {
+            this.saveImage(outputFile);
+        }
+        catch(IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void saveImage(File f) throws RuntimeException, IOException {
+        if (f.createNewFile()) {
             BufferedImage bImage = SwingFXUtils.fromFXImage(this.getImage(), null);
             try {
-                ImageIO.write(bImage, "png", outputFile);
+                ImageIO.write(bImage, "png", f);
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
         }
+    }
+
+    public Image getDefaultImage() {
+        return defaultImage;
     }
 }

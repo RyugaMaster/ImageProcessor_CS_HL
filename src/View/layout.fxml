@@ -1,23 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.Menu?>
-<?import javafx.scene.control.MenuBar?>
-<?import javafx.scene.control.MenuItem?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.chart.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.*?>
 <?import javafx.scene.text.Font?>
-
-<VBox prefHeight="400.0" prefWidth="640.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="View.ViewController">
+<VBox xmlns:fx="http://javafx.com/fxml/1" prefHeight="900.0" prefWidth="1600.0" xmlns="http://javafx.com/javafx/11.0.1"
+      fx:controller="View.ViewController">
   <children>
     <MenuBar VBox.vgrow="NEVER">
       <menus>
         <Menu mnemonicParsing="false" text="File">
           <items>
-            <MenuItem fx:id = "open" mnemonicParsing="false" text="Open…" onAction="#handleOpenAction"/>
-            <MenuItem fx:id = "save" mnemonicParsing="false" text="Save" onAction="#handleSaveAction"/>
-            <MenuItem fx:id = "saveAs" mnemonicParsing="false" text="Save As…" onAction="#handleSaveAsAction"/>
-            <MenuItem fx:id = "quit" mnemonicParsing="false" text="Quit" onAction="#handleQuitAction"/>
+              <MenuItem fx:id="open" mnemonicParsing="false" onAction="#handleOpenAction" text="Open…"/>
+              <MenuItem fx:id="save" mnemonicParsing="false" onAction="#handleSaveAction" text="Save"/>
+              <MenuItem fx:id="saveAs" mnemonicParsing="false" onAction="#handleSaveAsAction" text="Save As…"/>
+              <MenuItem fx:id="quit" mnemonicParsing="false" onAction="#handleQuitAction" text="Quit"/>
           </items>
         </Menu>
         <Menu mnemonicParsing="false" text="Edit" />
@@ -28,14 +26,104 @@
         </Menu>
       </menus>
     </MenuBar>
-    <AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="-1.0" prefWidth="-1.0" VBox.vgrow="ALWAYS">
-      <children>
-        <Label alignment="CENTER" layoutX="155.0" layoutY="177.0" style="&#10;" text="Drag components from Library here…" textAlignment="CENTER" textFill="#9f9f9f" wrapText="false">
-          <font>
-            <Font size="18.0" />
-          </font>
-        </Label>
-      </children>
-    </AnchorPane>
+      <HBox VBox.vgrow="ALWAYS">
+          <children>
+              <VBox>
+                  <children>
+                      <ImageView fx:id="img" fitHeight="762.0" fitWidth="1355.0" pickOnBounds="true">
+                      </ImageView>
+                      <HBox prefHeight="250.0" prefWidth="1355.0">
+                          <children>
+                              <VBox prefHeight="200.0" prefWidth="100.0">
+                                  <children>
+                                      <Label text="Hue">
+                                          <font>
+                                              <Font size="20.0"/>
+                                          </font>
+                                      </Label>
+                                      <Slider fx:id="hue" orientation="HORIZONTAL" prefHeight="50.0" prefWidth="100.0"/>
+                                  </children>
+                              </VBox>
+                              <VBox prefHeight="200.0" prefWidth="100.0">
+                                  <children>
+                                      <Label text="Brightness">
+                                          <font>
+                                              <Font size="20.0"/>
+                                          </font>
+                                      </Label>
+                                      <Slider fx:id="brightness" orientation="HORIZONTAL" prefHeight="50.0"
+                                              prefWidth="100.0"/>
+                                  </children>
+                              </VBox>
+                              <VBox prefHeight="150.0" prefWidth="172.0">
+                                  <children>
+                                      <CheckBox fx:id="bnw" mnemonicParsing="false" onAction="#handleToBNWAction"
+                                                text="Black &amp; White">
+                                          <font>
+                                              <Font size="20.0"/>
+                                          </font>
+                                      </CheckBox>
+                                      <CheckBox fx:id="gs" mnemonicParsing="false" onAction="#handleToGrayscaleAction"
+                                                text="Grayscale">
+                                          <font>
+                                              <Font size="20.0"/>
+                                          </font>
+                                      </CheckBox>
+                                  </children>
+                              </VBox>
+                              <ImageView fx:id="src" fitHeight="150.0" fitWidth="200.0"
+                                         onMouseClicked="#handleToDefaultAction" pickOnBounds="true"/>
+                              <ImageView fx:id="proc" fitHeight="150.0" fitWidth="200.0"
+                                         onMouseClicked="#handleToProcessedAction" pickOnBounds="true"/>
+                          </children>
+                      </HBox>
+                  </children>
+              </VBox>
+              <VBox prefHeight="763.0" prefWidth="200.0">
+                  <children>
+                      <BarChart fx:id="redChart" legendVisible="false" prefHeight="500.0" prefWidth="200.0"
+                                title="Red magnitude">
+                          <xAxis>
+                              <CategoryAxis side="BOTTOM"/>
+                          </xAxis>
+                          <yAxis>
+                              <NumberAxis minorTickVisible="false" side="LEFT" tickLabelsVisible="false"
+                                          tickMarkVisible="false"/>
+                          </yAxis>
+                      </BarChart>
+                      <BarChart fx:id="greenChart" legendVisible="false" prefHeight="500.0" prefWidth="200.0"
+                                title="Green magnitude">
+                          <xAxis>
+                              <CategoryAxis side="BOTTOM"/>
+                          </xAxis>
+                          <yAxis>
+                              <NumberAxis minorTickVisible="false" side="LEFT" tickLabelsVisible="false"
+                                          tickMarkVisible="false"/>
+                          </yAxis>
+                      </BarChart>
+                      <BarChart fx:id="blueChart" legendVisible="false" prefHeight="500.0" prefWidth="200.0"
+                                title="Blue magnitude">
+                          <xAxis>
+                              <CategoryAxis side="BOTTOM"/>
+                          </xAxis>
+                          <yAxis>
+                              <NumberAxis minorTickVisible="false" side="LEFT" tickLabelsVisible="false"
+                                          tickMarkVisible="false"/>
+                          </yAxis>
+                      </BarChart>
+                      <BarChart fx:id="allChart" legendVisible="false" prefHeight="500.0" prefWidth="200.0"
+                                title="Overall magnitude">
+                          <xAxis>
+                              <CategoryAxis side="BOTTOM"/>
+                          </xAxis>
+                          <yAxis>
+                              <NumberAxis minorTickVisible="false" side="LEFT" tickLabelsVisible="false"
+                                          tickMarkVisible="false"/>
+                          </yAxis>
+                      </BarChart>
+                  </children>
+              </VBox>
+          </children>
+      </HBox>
   </children>
 </VBox>
