@@ -353,4 +353,8 @@ public class ImageChanger {
             }
         }
     }
+
+    public Image getDefaultImage() {
+        return defaultImage;
+    }
 }
